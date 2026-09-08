@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FOCLYRA | Insights</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .insights-page {
+            max-width: 1000px;
+            margin: auto;
+            padding: 45px 25px;
+        }
+
+        .insights-hero {
+            margin-bottom: 30px;
+        }
+
+        .insights-hero h1 {
+            font-size: 40px;
+            margin: 8px 0;
+        }
+
+        .insights-hero p {
+            color: #666;
+        }
+
+        .insight-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+        }
+
+        .insight-card h2 {
+            margin-top: 0;
+        }
+
+        /* STUDY DEBT */
+
+        .debt-total {
+            background: #f5f7fb;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .debt-total strong {
+            font-size: 30px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .debt-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            margin: 10px 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+        }
+
+        .debt-item strong {
+            display: block;
+        }
+
+        .debt-item span {
+            font-weight: bold;
+        }
+
+        .no-debt {
+            padding: 20px;
+            background: #f0fdf4;
+            border-radius: 14px;
+        }
+
+        .recommendation {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            background: #eff6ff;
+        }
+
+
+        /* FOCUS FORECAST */
+
+        .forecast-intro {
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .forecast-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 14px 0;
+        }
+
+        .forecast-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .forecast-subject {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .focus-score {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2563eb;
+        }
+
+        .focus-bar {
+            height: 9px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .focus-bar-fill {
+            height: 100%;
+            background: #2563eb;
+            border-radius: 20px;
+        }
+
+        .forecast-status {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .forecast-reason {
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .forecast-recommendation {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .building-profile {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+            line-height: 1.6;
+        }
+
+
+        /* QUICK STATS */
+
+        .insight-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .stat-box {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+        }
+
+        .stat-box strong {
+            display: block;
+            font-size: 25px;
+            margin-top: 5px;
+        }
+
+
+        @media (max-width: 650px) {
+
+            .insights-hero h1 {
+                font-size: 32px;
+            }
+
+            .insight-stat-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .debt-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .forecast-top {
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <header class="topbar">
+
+        <div class="logo">
+            FOCLYRA
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="planner.html">
+                Planner
+            </a>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="focus.html">
+                Focus
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+    <main class="insights-page">
+
+
+        <!-- HEADER -->
+
+        <section class="insights-hero">
+
+            <p class="small-title">
+                FOCLYRA INTELLIGENCE
+            </p>
+
+            <h1>
+                📊 Study Insights
+            </h1>
+
+            <p>
+                Understand your study behavior and where
+                your plan needs attention.
+            </p>
+
+        </section>
+
+
+
+        <!-- FOCUS FORECAST -->
+
+        <section class="insight-card">
+
+            <h2>
+                🎯 Focus Forecast
+            </h2>
+
+            <p class="forecast-intro">
+
+                FOCLYRA learns from your completed focus
+                sessions to estimate which subjects are
+                currently a good fit for focused study.
+
+            </p>
+
+
+            <div id="focusForecast">
+
+                <div class="building-profile">
+
+                    🧠 Building your focus profile...
+
+                    <br>
+
+                    Complete a few Focus Sessions and
+                    FOCLYRA will start learning your
+                    study pattern.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- STUDY DEBT -->
+
+        <section class="insight-card">
+
+            <h2>
+                📚 Study Debt
+            </h2>
+
+            <p>
+                Study debt represents planned study time
+                that has not yet been completed.
+            </p>
+
+
+            <div class="debt-total">
+
+                <span>
+                    Total Study Debt
+                </span>
+
+                <strong id="totalDebt">
+                    0 min
+                </strong>
+
+            </div>
+
+
+            <div id="debtList">
+
+                <div class="no-debt">
+                    Loading your study debt...
+                </div>
+
+            </div>
+
+
+            <div
+                id="debtRecommendation"
+                class="recommendation"
+            >
+            </div>
+
+        </section>
+
+
+
+        <!-- QUICK STATS -->
+
+        <section class="insight-card">
+
+            <h2>
+                🎯 Quick Overview
+            </h2>
+
+
+            <div class="insight-stat-grid">
+
+
+                <div class="stat-box">
+
+                    <span>
+                        Planned
+                    </span>
+
+                    <strong id="plannedMinutes">
+                        0
+                    </strong>
+
+                    <small>
+                        minutes
+                    </small>
+
+                </div>
+
+
+                <div class="stat-box">
+
+                    <span>
+                        Studied
+                    </span>
+
+                    <strong id="studiedMinutes">
+                        0
+                    </strong>
+
+                    <small>
+                        minutes
+                    </small>
+
+                </div>
+
+
+                <div class="stat-box">
+
+                    <span>
+                        Completion
+                    </span>
+
+                    <strong id="completionRate">
+                        0%
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <script>
+
+
+        /* =========================================
+           FOCUS FORECAST ENGINE
+           ========================================= */
+
+
+        function createFocusForecast() {
+
+
+            const container =
+                document.getElementById("focusForecast");
+
+
+            if (!container) {
+                return;
+            }
+
+
+            const subjects =
+                (localStorage.getItem("subjects") || "")
+                    .split(",")
+                    .map(subject => subject.trim())
+                    .filter(Boolean);
+
+
+            const history =
+                JSON.parse(
+                    localStorage.getItem("focusHistory") || "[]"
+                );
+
+
+            /*
+             * No subjects
+             */
+
+            if (subjects.length === 0) {
+
+                container.innerHTML = `
+
+                    <div class="building-profile">
+
+                        Add your subjects in the Planner
+                        to build a Focus Forecast.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            /*
+             * Not enough behavior yet
+             */
+
+            if (history.length === 0) {
+
+                container.innerHTML = `
+
+                    <div class="building-profile">
+
+                        🧪 <strong>FOCLYRA is building
+                        your focus profile.</strong>
+
+                        <br><br>
+
+                        Complete your first Focus Session.
+
+                        <br>
+
+                        As you study, FOCLYRA will learn
+                        which subjects and session patterns
+                        work best for you.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            let forecastHTML = "";
+
+
+            subjects.forEach(subject => {
+
+
+                const subjectSessions =
+                    history.filter(
+                        session =>
+                            String(session.subject)
+                                .toLowerCase() ===
+                            subject.toLowerCase()
+                    );
+
+
+                /*
+                 * New subject
+                 */
+
+                if (subjectSessions.length === 0) {
+
+                    forecastHTML += `
+
+                        <div class="forecast-card">
+
+                            <div class="forecast-top">
+
+                                <div class="forecast-subject">
+
+                                    ${subject}
+
+                                </div>
+
+                                <div class="focus-score">
+
+                                    60%
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="focus-bar">
+
+                                <div
+                                    class="focus-bar-fill"
+                                    style="width:60%"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="forecast-status">
+
+                                🧪 New subject
+
+                            </div>
+
+
+                            <div class="forecast-reason">
+
+                                FOCLYRA does not have enough
+                                completed sessions for this
+                                subject yet.
+
+                            </div>
+
+
+                            <div class="forecast-recommendation">
+
+                                Recommended:
+                                Start with 25 minutes.
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                    return;
+
+                }
+
+
+
+                /*
+                 * Calculate completion behavior
+                 */
+
+                let totalPlanned = 0;
+
+                let totalCompleted = 0;
+
+
+                subjectSessions.forEach(session => {
+
+                    totalPlanned +=
+                        Number(
+                            session.plannedMinutes || 0
+                        );
+
+                    totalCompleted +=
+                        Number(
+                            session.completedMinutes || 0
+                        );
+
+                });
+
+
+                let completionRate = 0;
+
+
+                if (totalPlanned > 0) {
+
+                    completionRate =
+                        Math.round(
+                            (totalCompleted /
+                                totalPlanned) * 100
+                        );
+
+                }
+
+
+                /*
+                 * Keep score between 20 and 98.
+                 */
+
+                let focusScore =
+                    Math.max(
+                        20,
+                        Math.min(
+                            98,
+                            completionRate
+                        )
+                    );
+
+
+                let status = "";
+
+                let reason = "";
+
+                let recommendation = "";
+
+
+
+                if (focusScore >= 85) {
+
+                    status =
+                        "🟢 Strong focus fit";
+
+                    reason =
+                        "You have been completing your "
+                        + "recent "
+                        + subject
+                        + " sessions consistently.";
+
+                    recommendation =
+                        "Try another "
+                        + SESSION_RECOMMENDATION(subject)
+                        + " minute session.";
+
+                }
+
+                else if (focusScore >= 70) {
+
+                    status =
+                        "🟡 Good focus fit";
+
+                    reason =
+                        "Your recent "
+                        + subject
+                        + " sessions show a reasonably "
+                        + "consistent completion pattern.";
+
+                    recommendation =
+                        "A moderate session may work well.";
+
+                }
+
+                else {
+
+                    status =
+                        "🟠 Focus may be difficult";
+
+                    reason =
+                        "Your recent "
+                        + subject
+                        + " sessions were not fully "
+                        + "completed.";
+
+                    recommendation =
+                        "Start with a shorter session "
+                        + "and build momentum.";
+
+                }
+
+
+
+                forecastHTML += `
+
+                    <div class="forecast-card">
+
+
+                        <div class="forecast-top">
+
+                            <div class="forecast-subject">
+
+                                ${subject}
+
+                            </div>
+
+                            <div class="focus-score">
+
+                                ${focusScore}%
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="focus-bar">
+
+                            <div
+                                class="focus-bar-fill"
+                                style="width:${focusScore}%"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="forecast-status">
+
+                            ${status}
+
+                        </div>
+
+
+                        <div class="forecast-reason">
+
+                            ${reason}
+
+                        </div>
+
+
+                        <div class="forecast-recommendation">
+
+                            🎯 ${recommendation}
+
+                        </div>
+
+
+                    </div>
+
+                `;
+
+            });
+
+
+            container.innerHTML =
+                forecastHTML;
+
+        }
+
+
+
+        /*
+         * Recommend a session length based on
+         * the student's actual history.
+         */
+
+        function SESSION_RECOMMENDATION(subject) {
+
+
+            const history =
+                JSON.parse(
+                    localStorage.getItem("focusHistory") || "[]"
+                );
+
+
+            const sessions =
+                history.filter(
+                    session =>
+                        String(session.subject)
+                            .toLowerCase() ===
+                        subject.toLowerCase()
+                );
+
+
+            if (sessions.length === 0) {
+
+                return 25;
+
+            }
+
+
+            let total =
+                sessions.reduce(
+                    (sum, session) =>
+                        sum +
+                        Number(
+                            session.completedMinutes || 0
+                        ),
+                    0
+                );
+
+
+            const average =
+                Math.round(
+                    total / sessions.length
+                );
+
+
+            return Math.max(
+                20,
+                Math.min(
+                    60,
+                    average
+                )
+            );
+
+        }
+
+
+
+        /* =========================================
+           STUDY DEBT
+           ========================================= */
+
+
+        function getStudyDebt() {
+
+
+            const savedPlan =
+                JSON.parse(
+                    localStorage.getItem("foclyraPlan") || "[]"
+                );
+
+
+            const studiedMinutes =
+                Number(
+                    localStorage.getItem("studiedMinutes") || 0
+                );
+
+
+            const studySessions =
+                savedPlan.filter(
+                    session =>
+                        session.type === "studySession"
+                );
+
+
+            const plannedMinutes =
+                studySessions.reduce(
+                    (total, session) =>
+                        total +
+                        (Number(session.minutes) || 0),
+                    0
+                );
+
+
+            const totalDebt =
+                Math.max(
+                    0,
+                    plannedMinutes - studiedMinutes
+                );
+
+
+            document.getElementById("totalDebt")
+                .textContent =
+                totalDebt + " min";
+
+
+            document.getElementById("plannedMinutes")
+                .textContent =
+                plannedMinutes;
+
+
+            document.getElementById("studiedMinutes")
+                .textContent =
+                studiedMinutes;
+
+
+            const completionRate =
+                plannedMinutes > 0
+                    ? Math.min(
+                        100,
+                        Math.round(
+                            (studiedMinutes /
+                                plannedMinutes) * 100
+                        )
+                    )
+                    : 0;
+
+
+            document.getElementById("completionRate")
+                .textContent =
+                completionRate + "%";
+
+
+            const debtList =
+                document.getElementById("debtList");
+
+
+            const recommendation =
+                document.getElementById(
+                    "debtRecommendation"
+                );
+
+
+            if (totalDebt === 0) {
+
+                debtList.innerHTML = `
+
+                    <div class="no-debt">
+
+                        ✅ You're currently on track!
+
+                        <br>
+
+                        No study debt detected.
+
+                    </div>
+
+                `;
+
+
+                recommendation.innerHTML = `
+
+                    <strong>
+                        🧠 FOCLYRA says
+                    </strong>
+
+                    <p>
+                        Keep following your Smart Plan
+                        consistently.
+                    </p>
+
+                `;
+
+
+                return;
+
+            }
+
+
+            const subjects =
+                (localStorage.getItem("subjects") || "")
+                    .split(",")
+                    .map(subject => subject.trim())
+                    .filter(Boolean);
+
+
+            const debtPerSubject =
+                subjects.length > 0
+                    ? Math.ceil(
+                        totalDebt / subjects.length
+                    )
+                    : totalDebt;
+
+
+            let debtHTML = "";
+
+
+            subjects.forEach(subject => {
+
+                debtHTML += `
+
+                    <div class="debt-item">
+
+                        <div>
+
+                            <strong>
+                                ${subject}
+                            </strong>
+
+                            <small>
+                                Study attention needed
+                            </small>
+
+                        </div>
+
+                        <span>
+                            ${debtPerSubject} min
+                        </span>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            debtList.innerHTML =
+                debtHTML;
+
+
+            recommendation.innerHTML = `
+
+                <strong>
+                    🧠 FOCLYRA Recommendation
+                </strong>
+
+                <p>
+                    You have ${totalDebt} minutes of
+                    study debt. Prioritize important work
+                    instead of trying to complete everything
+                    at once.
+                </p>
+
+            `;
+
+        }
+
+
+
+        /* =========================================
+           START
+           ========================================= */
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                createFocusForecast();
+
+                getStudyDebt();
+
+            }
+        );
+
+
+    </script>
+
+<script src="theme.js"></script>
+</body>
+
+</html>

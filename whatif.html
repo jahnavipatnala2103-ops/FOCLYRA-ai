@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>What-If Planner | FOCLYRA</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .whatif-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 25px;
+        }
+
+        .whatif-hero {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .whatif-hero h1 {
+            font-size: 42px;
+            margin: 10px 0;
+        }
+
+        .whatif-hero p {
+            color: #666;
+        }
+
+        .whatif-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .whatif-card h2 {
+            margin-bottom: 8px;
+        }
+
+        .loss-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .loss-buttons button {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 12px;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .loss-buttons button:hover {
+            transform: translateY(-2px);
+        }
+
+        .whatif-result {
+            margin-top: 25px;
+        }
+
+        .whatif-summary {
+            background: #f5f7fb;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .whatif-session {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 18px;
+            margin: 12px 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            flex-wrap: wrap;
+        }
+
+        .whatif-session span {
+            color: #555;
+        }
+
+        .whatif-session small {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 8px;
+            background: #eef2ff;
+        }
+
+        .whatif-recommendation {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 14px;
+            background: #eff6ff;
+        }
+
+        .reasoning-title {
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .reason-card {
+            padding: 18px;
+            margin: 12px 0;
+            border-radius: 14px;
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+        }
+
+        .reason-card strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .reason-card p {
+            margin: 0;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 600px) {
+
+            .whatif-hero h1 {
+                font-size: 32px;
+            }
+
+            .whatif-card {
+                padding: 22px;
+            }
+
+            .loss-buttons button {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <header class="topbar">
+
+        <div class="logo">
+            FOCLYRA
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="planner.html">Planner</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="focus.html">Focus</a>
+        </nav>
+
+    </header>
+
+
+    <main class="whatif-page">
+
+        <section class="whatif-hero">
+
+            <p class="small-title">
+                FOCLYRA INTELLIGENCE
+            </p>
+
+            <h1>
+                🔮 What-If Planner
+            </h1>
+
+            <p>
+                See how FOCLYRA adapts when your study time changes.
+            </p>
+
+        </section>
+
+
+        <section class="whatif-card">
+
+            <h2>
+                What if I lose study time today?
+            </h2>
+
+            <p>
+                Choose how much study time you lose and FOCLYRA
+                will simulate the impact on your plan.
+            </p>
+
+
+            <div class="loss-buttons">
+
+                <button onclick="runWhatIf(30)">
+                    30 MIN
+                </button>
+
+                <button onclick="runWhatIf(60)">
+                    60 MIN
+                </button>
+
+                <button onclick="runWhatIf(120)">
+                    120 MIN
+                </button>
+
+            </div>
+
+
+            <div id="whatIfResult" class="whatif-result">
+
+                <p>
+                    Select an option above to see what happens
+                    to your study plan.
+                </p>
+
+                <div id="whatIfReasoning"></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        function runWhatIf(minutesLost) {
+
+            const result =
+                document.getElementById("whatIfResult");
+
+            const savedPlan =
+                JSON.parse(
+                    localStorage.getItem("foclyraPlan") || "[]"
+                );
+
+
+            const studySessions =
+                savedPlan.filter(
+                    session => session.type === "studySession"
+                );
+
+
+            if (studySessions.length === 0) {
+
+                result.innerHTML = `
+
+                    <h3>No study plan found</h3>
+
+                    <p>
+                        Create your Smart Plan from the Dashboard
+                        first.
+                    </p>
+
+                `;
+
+                return;
+            }
+
+
+            let remainingLoss = minutesLost;
+
+            let affected = 0;
+
+
+            const sessions =
+                studySessions.map(session => ({
+
+                    ...session,
+
+                    originalMinutes:
+                        Number(session.minutes) || 0,
+
+                    newMinutes:
+                        Number(session.minutes) || 0,
+
+                    status: "Protected"
+
+                }));
+
+
+            /*
+             * FOCLYRA protects the earlier sessions
+             * and reduces/moves sessions later in the plan.
+             */
+
+            for (
+                let i = sessions.length - 1;
+                i >= 0;
+                i--
+            ) {
+
+                if (remainingLoss <= 0) {
+                    break;
+                }
+
+
+                const session = sessions[i];
+
+
+                if (
+                    session.newMinutes <= remainingLoss
+                ) {
+
+                    remainingLoss -=
+                        session.newMinutes;
+
+                    session.newMinutes = 0;
+
+                    session.status = "Moved";
+
+                    affected++;
+
+                }
+
+                else {
+
+                    session.newMinutes -=
+                        remainingLoss;
+
+                    session.status = "Reduced";
+
+                    remainingLoss = 0;
+
+                    affected++;
+
+                }
+
+            }
+
+
+            let output = `
+
+                <h3>
+                    🔮 ${minutesLost} minutes lost
+                </h3>
+
+                <p>
+                    FOCLYRA simulated the effect without
+                    changing your actual study plan.
+                </p>
+
+                <div class="whatif-summary">
+
+                    <strong>
+                        Sessions affected:
+                    </strong>
+
+                    ${affected}
+
+                </div>
+
+            `;
+
+
+            sessions.forEach(session => {
+
+                if (
+                    session.status === "Protected"
+                ) {
+                    return;
+                }
+
+
+                output += `
+
+                    <div class="whatif-session">
+
+                        <strong>
+                            ${session.subject || "Study Session"}
+                        </strong>
+
+                        <span>
+
+                            ${session.originalMinutes} min
+
+                            →
+
+                            ${session.newMinutes} min
+
+                        </span>
+
+                        <small>
+                            ${session.status}
+                        </small>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            output += `
+
+                <div class="whatif-recommendation">
+
+                    <strong>
+                        🧠 FOCLYRA Recommendation
+                    </strong>
+
+                    <p>
+                        Protect high-priority study sessions
+                        and move lower-priority work instead
+                        of overloading the remaining time.
+                    </p>
+
+                </div>
+
+
+                <h3 class="reasoning-title">
+                    💡 Why FOCLYRA made these decisions
+                </h3>
+
+                <div id="whatIfReasoning">
+
+                </div>
+
+            `;
+
+
+            result.innerHTML = output;
+
+
+            /*
+             * Decision reasoning
+             */
+
+            const reasoning =
+                document.getElementById(
+                    "whatIfReasoning"
+                );
+
+
+            let reasoningHTML = "";
+
+
+            sessions.forEach(session => {
+
+                if (
+                    session.status === "Protected"
+                ) {
+
+                    reasoningHTML += `
+
+                        <div class="reason-card">
+
+                            <strong>
+                                🛡️ ${session.subject}
+                                — Protected
+                            </strong>
+
+                            <p>
+                                This session was kept because
+                                FOCLYRA tries to protect important
+                                study work before moving lower-priority
+                                sessions.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                else if (
+                    session.status === "Reduced"
+                ) {
+
+                    reasoningHTML += `
+
+                        <div class="reason-card">
+
+                            <strong>
+                                ⚠️ ${session.subject}
+                                — Reduced
+                            </strong>
+
+                            <p>
+                                There was not enough remaining time
+                                to keep the full session, so FOCLYRA
+                                reduced it instead of overloading
+                                the schedule.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                else if (
+                    session.status === "Moved"
+                ) {
+
+                    reasoningHTML += `
+
+                        <div class="reason-card">
+
+                            <strong>
+                                📅 ${session.subject}
+                                — Moved
+                            </strong>
+
+                            <p>
+                                This session could not fit into the
+                                remaining study window, so FOCLYRA
+                                recommends moving it instead of
+                                creating an unrealistic schedule.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+            });
+
+
+            reasoning.innerHTML =
+                reasoningHTML;
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+window.MathJax = {
+    tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['$$', '$$']]
+    },
+    options: {
+        skipHtmlTags: ['script', 'style', 'textarea', 'pre']
+    }
+};
+</script>
+<script
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    async>
+</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOCLYRA AI | Study Assistant</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Inter, Arial, sans-serif;
+            background: linear-gradient(135deg, #f7f9ff, #eef3ff);
+            color: #17213f;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            background: rgba(255,255,255,.96);
+            border-bottom: 1px solid #e5e9f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 900;
+            color: #5b6cff;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #4f46e5;
+        }
+
+        .page {
+            width: min(1120px, 92%);
+            margin: 38px auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        .ai-info,
+        .chat-container {
+            background: white;
+            border: 1px solid #e3e8f7;
+            border-radius: 22px;
+            box-shadow: 0 12px 40px rgba(40,55,110,.08);
+        }
+
+        .ai-info {
+            padding: 26px;
+            height: fit-content;
+        }
+
+        .ai-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #5b6cff, #7c5cff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 25px;
+            margin-bottom: 18px;
+        }
+
+        .ai-info h1 {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .ai-info p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .context-box {
+            background: #f7f8ff;
+            border: 1px solid #e4e8ff;
+            border-radius: 16px;
+            padding: 15px;
+        }
+
+        .context-title {
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: #5b6cff;
+            margin-bottom: 10px;
+        }
+
+        .context-item {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 7px;
+        }
+
+        .context-item strong {
+            color: #17213f;
+        }
+
+        .chat-container {
+            min-height: 650px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #edf0f7;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .chat-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 5px rgba(34,197,94,.12);
+        }
+
+        .chat-title strong {
+            font-size: 16px;
+        }
+
+        .chat-title span {
+            display: block;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .clear-btn {
+            border: 0;
+            background: #f1f5f9;
+            color: #64748b;
+            border-radius: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            min-height: 500px;
+            max-height: 500px;
+        }
+
+        .welcome-message {
+            text-align: center;
+            max-width: 620px;
+            margin: 70px auto;
+        }
+
+        .welcome-message h2 {
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-message p {
+            color: #64748b;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .suggestion-btn {
+            border: 1px solid #dfe5fb;
+            background: #f8faff;
+            color: #4f46e5;
+            padding: 10px 13px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .suggestion-btn:hover {
+            background: #eef1ff;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 18px;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.assistant {
+            justify-content: flex-start;
+        }
+
+        .bubble {
+            max-width: 78%;
+            padding: 13px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .message.user .bubble {
+            background: #5b6cff;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.assistant .bubble {
+            background: #f5f7fc;
+            color: #334155;
+            border-bottom-left-radius: 5px;
+            border: 1px solid #e8ebf3;
+        }
+
+        .message.assistant.error .bubble {
+            border-color: #fecaca;
+            background: #fff7f7;
+            color: #991b1b;
+        }
+
+        .input-area {
+            border-top: 1px solid #edf0f7;
+            padding: 16px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        #messageInput {
+            flex: 1;
+            resize: none;
+            min-height: 52px;
+            max-height: 140px;
+            border: 1px solid #dbe2f1;
+            border-radius: 15px;
+            padding: 14px 15px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        #messageInput:focus {
+            border-color: #6b76ff;
+            box-shadow: 0 0 0 3px rgba(91,108,255,.10);
+        }
+
+        #sendBtn {
+            width: 110px;
+            border: 0;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #5b6cff, #6b5cff);
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        #sendBtn:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        .input-hint {
+            color: #94a3b8;
+            font-size: 11px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        @media (max-width: 800px) {
+            .page {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-info {
+                order: 2;
+            }
+
+            .messages {
+                min-height: 450px;
+                max-height: 450px;
+            }
+
+            .navbar {
+                height: auto;
+                min-height: 72px;
+                padding: 16px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">FOCLYRA</div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="planner.html">Planner</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="ai.html" class="active">✨ FOCLYRA AI</a>
+        </div>
+    </nav>
+
+    <main class="page">
+        <aside class="ai-info">
+            <div class="ai-icon">🧠</div>
+
+            <h1>FOCLYRA AI</h1>
+
+            <p>
+                Your built-in study assistant. Ask doubts,
+                understand difficult topics, create practice
+                questions, or ask for a quiz without leaving FOCLYRA.
+            </p>
+
+            <div class="context-box">
+                <div class="context-title">YOUR STUDY CONTEXT</div>
+
+                <div class="context-item" id="ctxSubjects">
+                    <strong>Subjects:</strong> Loading...
+                </div>
+
+                <div class="context-item" id="ctxPriority">
+                    <strong>Priority:</strong> Loading...
+                </div>
+
+                <div class="context-item" id="ctxWeak">
+                    <strong>Weak topics:</strong> Loading...
+                </div>
+
+                <div class="context-item" id="ctxHours">
+                    <strong>Daily study:</strong> Loading...
+                </div>
+
+                <div class="context-item" id="ctxProgress">
+                    <strong>Progress:</strong> Loading...
+                </div>
+            </div>
+        </aside>
+
+        <section class="chat-container">
+            <header class="chat-header">
+                <div class="chat-title">
+                    <div class="status-dot"></div>
+                    <div>
+                        <strong>Study with FOCLYRA</strong>
+                        <span>Ask your academic doubts here</span>
+                    </div>
+                </div>
+
+                <button type="button" class="clear-btn" id="clearBtn">Clear</button>
+            </header>
+
+            <div class="messages" id="messages">
+                <div class="welcome-message" id="welcomeMessage">
+                    <h2>What are you stuck on? 👋</h2>
+
+                    <p>
+                        Ask a question and FOCLYRA AI will explain it
+                        in a simple, beginner-friendly way.
+                    </p>
+
+                    <div class="suggestions">
+                        <button class="suggestion-btn"
+                                data-question="Explain matrices in simple words.">
+                            Explain matrices
+                        </button>
+
+                        <button class="suggestion-btn"
+                                data-question="Give me 5 practice questions on C programming with answers hidden until I ask.">
+                            Practice C
+                        </button>
+
+                        <button class="suggestion-btn"
+                                data-question="Explain number systems in Digital Logic Design.">
+                            Explain number systems
+                        </button>
+
+                        <button class="suggestion-btn"
+                                data-question="Quiz me on my weak topics. Ask one question at a time and wait for my answer.">
+                            Quiz me
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-row">
+                    <textarea
+                        id="messageInput"
+                        placeholder="Ask FOCLYRA AI your study doubt..."
+                        rows="1"
+                    ></textarea>
+<button id="micBtn" type="button" title="Speak your doubt">🎤</button>
+<button id="cameraBtn" type="button" title="Ask from a photo">📷</button>
+
+<input
+    id="imageInput"
+    type="file"
+    accept="image/*"
+    capture="environment"
+    hidden
+>
+                    <button id="sendBtn" type="button">Ask AI →</button>
+                </div>
+
+                <div class="input-hint">
+                    FOCLYRA AI uses your study context to make answers more relevant.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let conversationHistory = [];
+        let isSending = false;
+
+        function getStudyContext() {
+            const subjects = localStorage.getItem("subjects") || "";
+            const weakTopics = localStorage.getItem("weakTopics") || "";
+            const priority = localStorage.getItem("priority") || "";
+            const studyHours = localStorage.getItem("studyHours") || "";
+            const progress = localStorage.getItem("progress") || "0";
+
+            return {
+                subjects: subjects || "Not provided",
+                weakTopics: weakTopics || "Not provided",
+                priority: priority || "Not provided",
+                studyHours: studyHours || "Not provided",
+                progress: progress + "%"
+            };
+        }
+
+        function escapeHTML(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function displayContext() {
+            const context = getStudyContext();
+
+            document.getElementById("ctxSubjects").innerHTML =
+                "<strong>Subjects:</strong> " + escapeHTML(context.subjects);
+
+            document.getElementById("ctxPriority").innerHTML =
+                "<strong>Priority:</strong> " + escapeHTML(context.priority);
+
+            document.getElementById("ctxWeak").innerHTML =
+                "<strong>Weak topics:</strong> " + escapeHTML(context.weakTopics);
+
+            document.getElementById("ctxHours").innerHTML =
+                "<strong>Daily study:</strong> " +
+                escapeHTML(
+                    context.studyHours === "Not provided"
+                        ? context.studyHours
+                        : context.studyHours + " hours"
+                );
+
+            document.getElementById("ctxProgress").innerHTML =
+                "<strong>Progress:</strong> " + escapeHTML(context.progress);
+        }
+
+        function removeWelcome() {
+            const welcome = document.getElementById("welcomeMessage");
+            if (welcome) welcome.remove();
+        }
+
+        function addMessage(role, text, error = false) {
+            removeWelcome();
+
+            const messages = document.getElementById("messages");
+            const wrapper = document.createElement("div");
+            wrapper.className = "message " + role + (error ? " error" : "");
+
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+            bubble.textContent = text;
+
+            wrapper.appendChild(bubble);
+            messages.appendChild(wrapper);
+            messages.scrollTop = messages.scrollHeight;
+
+            return bubble;
+        }
+
+        async function sendMessage(customMessage = null) {
+            if (isSending) return;
+
+            const input = document.getElementById("messageInput");
+            const sendBtn = document.getElementById("sendBtn");
+
+            const message = (customMessage || input.value).trim();
+            if (!message) return;
+
+            isSending = true;
+            sendBtn.disabled = true;
+            sendBtn.textContent = "Thinking...";
+
+            if (!customMessage) input.value = "";
+
+            addMessage("user", message);
+
+            const typingBubble = addMessage(
+                "assistant",
+                "FOCLYRA AI is thinking..."
+            );
+
+            const context = getStudyContext();
+
+            try {
+                const response = await fetch("/api/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        message,
+                        history: conversationHistory,
+                        context
+                    })
+                });
+
+                let data = {};
+                try {
+                    data = await response.json();
+                } catch {
+                    throw new Error(
+                        "Server returned an invalid response. Check the Terminal."
+                    );
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.error ||
+                        data.message ||
+                        "The AI server returned an error."
+                    );
+                }
+
+                const answer =
+                    data.reply ||
+                    data.answer ||
+                    data.output ||
+                    "Sorry, I couldn't generate a response.";
+
+                typingBubble.innerHTML = escapeHTML(answer)
+    .replace(/^###\s+(.*)$/gm, "<h3>$1</h3>")
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\n/g, "<br>");
+
+if (window.MathJax) {
+    window.MathJax.typesetPromise([typingBubble]).catch(console.error);
+}
+
+                conversationHistory.push(
+                    { role: "user", content: message },
+                    { role: "assistant", content: answer }
+                );
+
+                if (conversationHistory.length > 12) {
+                    conversationHistory =
+                        conversationHistory.slice(-12);
+                }
+            } catch (error) {
+                typingBubble.textContent =
+                    "AI error: " + error.message +
+                    "\n\nOpen the VS Code Terminal and check the error there.";
+                typingBubble.parentElement.classList.add("error");
+                console.error("FOCLYRA AI:", error);
+            } finally {
+                isSending = false;
+                sendBtn.disabled = false;
+                sendBtn.textContent = "Ask AI →";
+                input.focus();
+            }
+        }
+
+        function clearChat() {
+            conversationHistory = [];
+
+            document.getElementById("messages").innerHTML = `
+                <div class="welcome-message" id="welcomeMessage">
+                    <h2>What are you stuck on? 👋</h2>
+                    <p>
+                        Ask a question and FOCLYRA AI will explain it
+                        in a simple, beginner-friendly way.
+                    </p>
+                    <div class="suggestions">
+                        <button class="suggestion-btn" data-question="Explain matrices in simple words.">
+                            Explain matrices
+                        </button>
+                        <button class="suggestion-btn" data-question="Give me 5 practice questions on C programming with answers hidden until I ask.">
+                            Practice C
+                        </button>
+                        <button class="suggestion-btn" data-question="Explain number systems in Digital Logic Design.">
+                            Explain number systems
+                        </button>
+                        <button class="suggestion-btn" data-question="Quiz me on my weak topics. Ask one question at a time and wait for my answer.">
+                            Quiz me
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            setupSuggestionButtons();
+        }
+
+        function setupSuggestionButtons() {
+            document.querySelectorAll(".suggestion-btn").forEach(button => {
+                button.onclick = () => sendMessage(button.dataset.question);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            displayContext();
+            setupSuggestionButtons();
+
+            const sendBtn = document.getElementById("sendBtn");
+            const input = document.getElementById("messageInput");
+            const clearBtn = document.getElementById("clearBtn");
+
+            sendBtn.addEventListener("click", () => sendMessage());
+
+            input.addEventListener("keydown", event => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            clearBtn.addEventListener("click", clearChat);
+            const micBtn = document.getElementById("micBtn");
+
+const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (SpeechRecognition && micBtn) {
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-IN";
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    micBtn.addEventListener("click", () => {
+        recognition.start();
+        micBtn.textContent = "🔴";
+    });
+const cameraBtn = document.getElementById("cameraBtn");
+const imageInput = document.getElementById("imageInput");
+
+if (cameraBtn && imageInput) {
+    cameraBtn.addEventListener("click", () => {
+        imageInput.click();
+    });
+
+}
+imageInput.onchange = function () {
+    const file = imageInput.files[0];
+
+    if (file) {
+        input.value = "📷 " + file.name;
+        input.focus();
+    }
+};
+    recognition.onresult = (event) => {
+        const spokenText = event.results[0][0].transcript;
+        input.value = spokenText;
+        micBtn.textContent = "🎤";
+        input.focus();
+    };
+
+    recognition.onerror = () => {
+        micBtn.textContent = "🎤";
+    };
+
+    recognition.onend = () => {
+        micBtn.textContent = "🎤";
+    };
+}
+        });
+    </script>
+</body>
+</html>

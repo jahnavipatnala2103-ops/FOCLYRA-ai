@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FOCLYRA | Dashboard</title>
+
+    <!-- CORRECT CSS PATH -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CORRECT JAVASCRIPT PATH -->
+    <script src="script/script.js"></script>
+
+    <!-- NAME COMPATIBILITY FIX -->
+    <script>
+        if (!localStorage.getItem("studentName")) {
+            const savedName =
+                localStorage.getItem("name") || "Student";
+
+            localStorage.setItem(
+                "studentName",
+                savedName
+            );
+        }
+    </script>
+
+</head>
+
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <nav>
+
+        <div class="logo">
+            FOCLYRA
+        </div>
+
+        <div class="nav-links">
+
+            <a href="planner.html">
+                Edit Plan
+            </a>
+
+            <a href="index.html">
+                Home
+            </a>
+            <a href="ai.html">
+    ✨ FOCLYRA AI
+</a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         DASHBOARD
+    ========================== -->
+
+    <main class="dashboard">
+
+
+        <!-- DASHBOARD HEADER -->
+
+        <div class="dashboard-header">
+
+            <div>
+
+                <p class="small-title">
+                    YOUR PERSONAL DASHBOARD
+                </p>
+
+                <h1>
+                    Welcome,
+                    <span id="userName">
+                        Student
+                    </span>
+                    👋
+                </h1>
+
+                <p class="dashboard-subtitle">
+                    Here's what FOCLYRA recommends for you today.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             TOP DASHBOARD CARDS
+        ========================== -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- TODAY'S FOCUS -->
+
+            <div class="dashboard-card focus-card">
+
+                <div class="card-icon">
+                    🎯
+                </div>
+
+                <h2>
+                    Today's Focus
+                </h2>
+
+                <p
+                    class="big-subject"
+                    id="prioritySubject"
+                >
+                    Your priority subject
+                </p>
+
+                <p>
+                    Start with your most important subject
+                    while your concentration is high.
+                </p>
+
+                <button onclick="startFocus()">
+                    Start Focus Session →
+                </button>
+<a href="ai.html" class="ai-dashboard-btn">
+    🧠 Ask FOCLYRA AI
+</a>
+            </div>
+
+
+            <!-- EXAM COUNTDOWN -->
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    📅
+                </div>
+
+                <h2>
+                    Exam Countdown
+                </h2>
+
+                <div
+                    class="countdown"
+                    id="countdown"
+                >
+                    Calculating...
+                </div>
+
+                <div class="exam-motivation">
+
+                    <strong>
+                        This exam is not just a test.<br>
+                        It's your comeback.
+                    </strong>
+
+                    <span>
+                        { Make it worth it. }
+                    </span>
+
+                </div>
+
+                <p>
+                    Stay consistent and avoid last-minute studying.
+                </p>
+
+            </div>
+
+
+            <!-- DAILY STUDY GOAL -->
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    ⏱️
+                </div>
+
+                <h2>
+                    Daily Study Goal
+                </h2>
+
+                <div class="hours">
+
+                    <span id="studyHours">
+                        0
+                    </span>
+
+                    <small>
+                        hours
+                    </small>
+
+                </div>
+
+                <p>
+                    Your available study time today.
+                </p>
+
+            </div>
+
+
+            <!-- SUBJECTS -->
+
+            <div class="dashboard-card subjects-card">
+
+                <div class="card-icon">
+                    📚
+                </div>
+
+                <h2>
+                    Your Subjects
+                </h2>
+
+                <div id="subjectList">
+                    <!-- FOCLYRA loads subjects here -->
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             STUDY PROGRESS
+        ========================== -->
+
+        <section class="progress-section">
+
+            <div class="progress-icon">
+                📊
+            </div>
+
+            <div class="progress-content">
+
+                <h2>
+                    Today's Study Progress
+                </h2>
+
+                <p>
+                    Keep going! You're building a great study habit.
+                </p>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
+
+                </div>
+
+                <div class="progress-info">
+
+                    <strong id="progressText">
+                        0% completed
+                    </strong>
+
+                    <span id="progressTime">
+                        0 minutes studied
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SMART STUDY PLAN
+        ========================== -->
+
+        <section class="smart-plan-section">
+
+
+            <div class="smart-plan-header">
+
+                <div>
+
+                    <p class="small-title">
+                        TODAY'S SMART PLAN
+                    </p>
+
+                    <h2>
+                        FOCLYRA planned your study time 🧠
+                    </h2>
+
+                    <p>
+                        Your time is distributed according to urgency,
+                        priorities and your study situation.
+                    </p>
+
+                </div>
+
+
+                <div class="plan-score">
+
+                    <span>
+                        PLAN SCORE
+                    </span>
+
+                    <strong id="planScore">
+                        --
+                    </strong>
+
+                    <small>
+                        /100
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div id="smartPlanList">
+                <!-- FOCLYRA generates the Smart Plan here -->
+            </div>
+
+
+            <div
+                class="plan-validation"
+                id="planValidation"
+            >
+                Checking your plan...
+            </div>
+
+
+            <!-- PLAN RESCUE -->
+
+            <div class="rescue-area">
+
+                <button
+                    class="rescue-button"
+                    id="rescueBtn"
+                >
+                    🚨 Plan Rescue
+                </button>
+
+                <p id="rescueMessage"></p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PLAN HEALTH
+        ========================== -->
+
+        <section class="plan-health-section">
+
+
+            <div class="plan-health-header">
+
+                <div>
+
+                    <p class="small-title">
+                        FOCLYRA INTELLIGENCE
+                    </p>
+
+                    <h2>
+                        🧠 Plan Health
+                    </h2>
+
+                    <p>
+                        Is your study plan actually realistic?
+                    </p>
+
+                </div>
+
+
+                <div class="plan-health-score">
+
+                    <strong id="planHealthScore">
+                        --
+                    </strong>
+
+                    <span>
+                        /100
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="plan-health-status"
+                id="planHealthStatus"
+            >
+                Analyzing your plan...
+            </div>
+
+
+            <div
+                class="plan-health-details"
+                id="planHealthDetails"
+            >
+                <!-- FOCLYRA explains plan health here -->
+            </div>
+
+
+            <div
+                class="plan-health-suggestion"
+                id="planHealthSuggestion"
+            >
+                <!-- FOCLYRA suggestion -->
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             AI RECOMMENDATION
+        ========================== -->
+
+        <section class="recommendation">
+
+            <div class="recommendation-icon">
+                ✨
+            </div>
+
+            <div>
+
+                <h2>
+                    FOCLYRA Recommendation
+                </h2>
+
+                <p id="recommendationText">
+                    Based on your priority and available time,
+                    FOCLYRA recommends starting with your priority subject.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             MOTIVATION
+        ========================== -->
+
+        <section class="motivation-card">
+
+            <div class="motivation-icon">
+                ✨
+            </div>
+
+            <div class="motivation-content">
+
+                <p class="motivation-label">
+                    FOCLYRA MOMENT
+                </p>
+
+                <h2 id="motivationQuote">
+                    Small progress is still progress.
+                </h2>
+
+                <p id="motivationMessage">
+                    Keep showing up. Consistency matters more than perfection.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =========================
+         FOCUS BUTTON FUNCTION
+    ========================== -->
+
+    <script>
+
+        function startFocus() {
+
+            window.location.href =
+                "focus.html";
+
+        }
+
+    </script>
+
+<script src="theme.js"></script>
+</body>
+
+</html>

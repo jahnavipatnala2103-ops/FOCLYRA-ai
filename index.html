@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FOCLYRA | Smart Study Planner</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        :root {
+            --primary: #5b6cff;
+            --primary-dark: #4655e8;
+            --text: #17213f;
+            --muted: #707a98;
+            --soft: #eef1ff;
+            --border: #e2e6f4;
+            --white: #ffffff;
+        }
+
+
+        body {
+
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            color: var(--text);
+
+            background:
+                radial-gradient(
+                    circle at 10% 5%,
+                    #eef1ff 0,
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 90% 10%,
+                    #f7edff 0,
+                    transparent 28%
+                ),
+
+                #fafbff;
+
+            min-height: 100vh;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+
+            height: 76px;
+
+            padding: 0 7%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background:
+                rgba(255,255,255,0.86);
+
+            backdrop-filter:
+                blur(18px);
+
+            border-bottom:
+                1px solid #e8eaf3;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 50;
+        }
+
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: 900;
+
+            letter-spacing: 3px;
+
+            color: var(--primary);
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        .nav-links a {
+
+            text-decoration: none;
+
+            color: #626d8b;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            padding: 10px 14px;
+
+            border-radius: 10px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .nav-links a:hover {
+
+            color: var(--primary);
+
+            background: var(--soft);
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            max-width: 1180px;
+
+            margin: auto;
+
+            min-height: 650px;
+
+            padding:
+                75px 6% 65px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 0.9fr;
+
+            gap: 70px;
+
+            align-items: center;
+        }
+
+
+        .hero-text {
+
+            max-width: 650px;
+        }
+
+
+        .eyebrow {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            padding:
+                8px 14px;
+
+            border:
+                1px solid #dce2ff;
+
+            border-radius: 999px;
+
+            background:
+                rgba(255,255,255,0.85);
+
+            color:
+                var(--primary);
+
+            font-size: 11px;
+
+            font-weight: 900;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(52px, 6.5vw, 82px);
+
+            line-height:
+                0.98;
+
+            letter-spacing:
+                -5px;
+
+            margin-bottom:
+                25px;
+        }
+
+
+        .hero h1 span {
+
+            color:
+                var(--primary);
+        }
+
+
+        .hero-description {
+
+            max-width:
+                610px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                18px;
+
+            line-height:
+                1.7;
+
+            margin-bottom:
+                30px;
+        }
+
+
+        .hero-buttons {
+
+            display:
+                flex;
+
+            gap:
+                12px;
+
+            flex-wrap:
+                wrap;
+        }
+
+
+        #startBtn {
+
+            border:
+                none;
+
+            padding:
+                16px 23px;
+
+            border-radius:
+                13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6170ff,
+                    #7557f5
+                );
+
+            color:
+                white;
+
+            font-size:
+                15px;
+
+            font-weight:
+                800;
+
+            cursor:
+                pointer;
+
+            box-shadow:
+                0 13px 30px
+                rgba(91,108,255,0.25);
+
+            transition:
+                0.25s ease;
+        }
+
+
+        #startBtn:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 18px 35px
+                rgba(91,108,255,0.32);
+        }
+
+
+        .outline-button {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                16px 21px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                13px;
+
+            background:
+                white;
+
+            color:
+                #5f6985;
+
+            text-decoration:
+                none;
+
+            font-size:
+                15px;
+
+            font-weight:
+                800;
+        }
+
+
+        /* =========================
+           PRODUCT PREVIEW
+        ========================= */
+
+        .hero-visual {
+
+            position:
+                relative;
+
+            padding:
+                10px;
+        }
+
+
+        .glow {
+
+            position:
+                absolute;
+
+            width:
+                250px;
+
+            height:
+                250px;
+
+            border-radius:
+                50%;
+
+            background:
+                #e3e7ff;
+
+            filter:
+                blur(45px);
+
+            top:
+                40px;
+
+            right:
+                30px;
+
+            z-index:
+                0;
+        }
+
+
+        .product-card {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            background:
+                rgba(255,255,255,0.95);
+
+            border:
+                1px solid #dfe4f3;
+
+            border-radius:
+                28px;
+
+            padding:
+                22px;
+
+            box-shadow:
+                0 30px 80px
+                rgba(45,58,120,0.14);
+
+            transform:
+                rotate(1deg);
+
+            transition:
+                0.3s ease;
+        }
+
+
+        .product-card:hover {
+
+            transform:
+                rotate(0deg)
+                translateY(-5px);
+        }
+
+
+        .product-top {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            margin-bottom:
+                18px;
+        }
+
+
+        .product-brand {
+
+            color:
+                var(--primary);
+
+            font-size:
+                14px;
+
+            font-weight:
+                900;
+
+            letter-spacing:
+                2px;
+        }
+
+
+        .live {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                6px;
+
+            padding:
+                6px 9px;
+
+            border-radius:
+                999px;
+
+            background:
+                #eefaf5;
+
+            color:
+                #21a56f;
+
+            font-size:
+                9px;
+
+            font-weight:
+                900;
+        }
+
+
+        .live-dot {
+
+            width:
+                6px;
+
+            height:
+                6px;
+
+            border-radius:
+                50%;
+
+            background:
+                #21b879;
+        }
+
+
+        .preview-welcome {
+
+            padding:
+                18px;
+
+            border-radius:
+                18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f1f3ff,
+                    #f8f2ff
+                );
+
+            margin-bottom:
+                13px;
+        }
+
+
+        .preview-label {
+
+            font-size:
+                9px;
+
+            font-weight:
+                900;
+
+            letter-spacing:
+                1.7px;
+
+            color:
+                #7a84a2;
+
+            margin-bottom:
+                7px;
+        }
+
+
+        .preview-welcome h2 {
+
+            font-size:
+                23px;
+
+            letter-spacing:
+                -1px;
+        }
+
+
+        .preview-welcome h2 span {
+
+            color:
+                var(--primary);
+        }
+
+
+        .preview-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                12px;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        .mini-card {
+
+            padding:
+                17px;
+
+            border:
+                1px solid #e6e9f2;
+
+            border-radius:
+                17px;
+
+            background:
+                white;
+        }
+
+
+        .mini-icon {
+
+            font-size:
+                18px;
+
+            margin-bottom:
+                10px;
+        }
+
+
+        .mini-card span {
+
+            display:
+                block;
+
+            color:
+                #7c86a2;
+
+            font-size:
+                10px;
+
+            margin-bottom:
+                4px;
+        }
+
+
+        .mini-card strong {
+
+            display:
+                block;
+
+            font-size:
+                18px;
+        }
+
+
+        .mini-card small {
+
+            display:
+                block;
+
+            color:
+                var(--primary);
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+            margin-top:
+                4px;
+        }
+
+
+        .smart-preview {
+
+            padding:
+                17px;
+
+            border-radius:
+                18px;
+
+            background:
+                #f7f8ff;
+
+            border:
+                1px solid #e6e9f7;
+        }
+
+
+        .smart-header {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        .smart-header strong {
+
+            font-size:
+                13px;
+        }
+
+
+        .score {
+
+            color:
+                #20a874;
+
+            font-size:
+                11px;
+
+            font-weight:
+                900;
+        }
+
+
+        .study-row {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            padding:
+                9px 0;
+
+            border-bottom:
+                1px solid #e4e7f2;
+
+            font-size:
+                11px;
+        }
+
+
+        .study-row:last-child {
+
+            border-bottom:
+                none;
+        }
+
+
+        .study-subject {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                7px;
+        }
+
+
+        .study-dot {
+
+            width:
+                7px;
+
+            height:
+                7px;
+
+            border-radius:
+                50%;
+
+            background:
+                var(--primary);
+        }
+
+
+        .study-time {
+
+            font-weight:
+                900;
+
+            color:
+                var(--primary);
+        }
+
+
+        /* =========================
+           HERO TRUST
+        ========================= */
+
+        .trust-strip {
+
+            max-width:
+                1050px;
+
+            margin:
+                0 auto 70px;
+
+            padding:
+                18px 25px;
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            gap:
+                42px;
+
+            flex-wrap:
+                wrap;
+
+            color:
+                #68738f;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+        }
+
+
+        .trust-item {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+        }
+
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .section {
+
+            max-width:
+                1100px;
+
+            margin:
+                auto;
+
+            padding:
+                65px 6% 90px;
+        }
+
+
+        .section-heading {
+
+            text-align:
+                center;
+
+            max-width:
+                720px;
+
+            margin:
+                0 auto 45px;
+        }
+
+
+        .section-heading h2 {
+
+            font-size:
+                clamp(32px,4vw,47px);
+
+            letter-spacing:
+                -2.5px;
+
+            margin-bottom:
+                14px;
+        }
+
+
+        .section-heading p {
+
+            color:
+                var(--muted);
+
+            line-height:
+                1.7;
+        }
+
+
+        .feature-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap:
+                18px;
+        }
+
+
+        .feature-card {
+
+            background:
+                rgba(255,255,255,0.9);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                22px;
+
+            padding:
+                28px;
+
+            transition:
+                0.25s ease;
+        }
+
+
+        .feature-card:hover {
+
+            transform:
+                translateY(-6px);
+
+            box-shadow:
+                0 20px 40px
+                rgba(50,65,120,0.09);
+        }
+
+
+        .feature-icon {
+
+            width:
+                48px;
+
+            height:
+                48px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                14px;
+
+            background:
+                var(--soft);
+
+            font-size:
+                21px;
+
+            margin-bottom:
+                18px;
+        }
+
+
+        .feature-card h3 {
+
+            font-size:
+                19px;
+
+            margin-bottom:
+                9px;
+        }
+
+
+        .feature-card p {
+
+            color:
+                var(--muted);
+
+            line-height:
+                1.65;
+
+            font-size:
+                14px;
+        }
+
+
+        /* =========================
+           DIFFERENCE
+        ========================= */
+
+        .difference {
+
+            max-width:
+                1100px;
+
+            margin:
+                10px auto 90px;
+
+            padding:
+                0 6%;
+        }
+
+
+        .difference-box {
+
+            border-radius:
+                28px;
+
+            padding:
+                45px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #182454,
+                    #354187
+                );
+
+            color:
+                white;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                40px;
+
+            overflow:
+                hidden;
+        }
+
+
+        .difference-box .eyebrow {
+
+            background:
+                rgba(255,255,255,0.08);
+
+            border-color:
+                rgba(255,255,255,0.14);
+
+            color:
+                #cfd5ff;
+        }
+
+
+        .difference-box h2 {
+
+            font-size:
+                36px;
+
+            letter-spacing:
+                -1.5px;
+
+            margin-bottom:
+                15px;
+        }
+
+
+        .difference-box p {
+
+            color:
+                #cbd2f1;
+
+            line-height:
+                1.7;
+        }
+
+
+        .difference-list {
+
+            display:
+                grid;
+
+            gap:
+                12px;
+        }
+
+
+        .difference-item {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                13px;
+
+            padding:
+                14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
+
+            border-radius:
+                14px;
+
+            background:
+                rgba(255,255,255,0.06);
+        }
+
+
+        .difference-item strong {
+
+            color:
+                #aeb7ff;
+        }
+
+
+        .difference-item span {
+
+            font-size:
+                13px;
+
+            color:
+                #e4e8ff;
+        }
+
+
+        /* =========================
+           FINAL CTA
+        ========================= */
+
+        .final-cta {
+
+            text-align:
+                center;
+
+            padding:
+                35px 6% 90px;
+        }
+
+
+        .final-cta h2 {
+
+            font-size:
+                clamp(32px,4vw,48px);
+
+            letter-spacing:
+                -2px;
+
+            margin-bottom:
+                13px;
+        }
+
+
+        .final-cta p {
+
+            color:
+                var(--muted);
+
+            margin-bottom:
+                25px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            padding:
+                25px;
+
+            text-align:
+                center;
+
+            border-top:
+                1px solid #e6e9f1;
+
+            color:
+                #8a92a8;
+
+            font-size:
+                12px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .hero {
+
+                grid-template-columns:
+                    1fr;
+
+                gap:
+                    45px;
+
+                padding-top:
+                    55px;
+            }
+
+
+            .hero-text {
+
+                max-width:
+                    700px;
+            }
+
+
+            .hero-visual {
+
+                max-width:
+                    620px;
+
+                width:
+                    100%;
+
+                margin:
+                    auto;
+            }
+
+
+            .feature-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .difference-box {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            nav {
+
+                padding:
+                    0 20px;
+            }
+
+
+            .nav-links a {
+
+                padding:
+                    7px;
+
+                font-size:
+                    11px;
+            }
+
+
+            .hero {
+
+                padding:
+                    50px 20px 45px;
+            }
+
+
+            .hero h1 {
+
+                letter-spacing:
+                    -3px;
+            }
+
+
+            .hero-description {
+
+                font-size:
+                    16px;
+            }
+
+
+            .preview-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .difference-box {
+
+                padding:
+                    28px;
+            }
+
+
+            .difference-box h2 {
+
+                font-size:
+                    30px;
+            }
+
+
+            .trust-strip {
+
+                gap:
+                    20px;
+
+                padding:
+                    10px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav>
+
+        <div class="logo">
+            FOCLYRA
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="#features">
+                How it works
+            </a>
+
+            <a href="planner.html">
+                Planner
+            </a>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+            <a href="ai.html">
+    ✨ FOCLYRA AI
+</a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <main class="hero">
+
+
+        <div class="hero-text">
+
+            <div class="eyebrow">
+                ✦ YOUR PERSONAL STUDY COMPANION
+            </div>
+
+
+            <h1>
+
+                Plan less.<br>
+
+                <span>
+                    Learn smarter.
+                </span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                FOCLYRA creates a personalized study strategy
+                around your exams, priorities, available time
+                and actual study behavior.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <button id="startBtn">
+                    Start Planning →
+                </button>
+
+
+                <a
+                    href="#features"
+                    class="outline-button"
+                >
+                    See how it works
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             MINI PRODUCT PREVIEW
+        ========================== -->
+
+        <div class="hero-visual">
+
+            <div class="glow"></div>
+
+
+            <div class="product-card">
+
+
+                <div class="product-top">
+
+                    <div class="product-brand">
+                        ✨ FOCLYRA
+                    </div>
+
+
+                    <div class="live">
+
+                        <div class="live-dot"></div>
+
+                        SMART PLAN
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="preview-welcome">
+
+                    <div class="preview-label">
+                        PERSONAL STUDY DASHBOARD
+                    </div>
+
+                    <h2>
+                        Welcome,
+                        <span>Student</span> 👋
+                    </h2>
+
+                </div>
+
+
+
+                <div class="preview-grid">
+
+
+                    <div class="mini-card">
+
+                        <div class="mini-icon">
+                            🎯
+                        </div>
+
+                        <span>
+                            TODAY'S FOCUS
+                        </span>
+
+                        <strong>
+                            Mathematics
+                        </strong>
+
+                        <small>
+                            Priority subject
+                        </small>
+
+                    </div>
+
+
+
+                    <div class="mini-card">
+
+                        <div class="mini-icon">
+                            📅
+                        </div>
+
+                        <span>
+                            EXAM COUNTDOWN
+                        </span>
+
+                        <strong>
+                            23 days
+                        </strong>
+
+                        <small>
+                            Stay consistent
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="smart-preview">
+
+
+                    <div class="smart-header">
+
+                        <strong>
+                            🧠 Today's Smart Plan
+                        </strong>
+
+                        <div class="score">
+                            92 / 100
+                        </div>
+
+                    </div>
+
+
+                    <div class="study-row">
+
+                        <div class="study-subject">
+
+                            <div class="study-dot"></div>
+
+                            Mathematics
+
+                        </div>
+
+                        <div class="study-time">
+                            50 min
+                        </div>
+
+                    </div>
+
+
+                    <div class="study-row">
+
+                        <div class="study-subject">
+
+                            <div class="study-dot"></div>
+
+                            Physics
+
+                        </div>
+
+                        <div class="study-time">
+                            35 min
+                        </div>
+
+                    </div>
+
+
+                    <div class="study-row">
+
+                        <div class="study-subject">
+
+                            <div class="study-dot"></div>
+
+                            C Programming
+
+                        </div>
+
+                        <div class="study-time">
+                            25 min
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================
+         TRUST STRIP
+    ========================== -->
+
+    <div class="trust-strip">
+
+        <div class="trust-item">
+            🧠 Priority-aware
+        </div>
+
+        <div class="trust-item">
+            ⚡ Adaptive planning
+        </div>
+
+        <div class="trust-item">
+            🎯 Focus tracking
+        </div>
+
+        <div class="trust-item">
+            🔄 Plan recovery
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         FEATURES
+    ========================== -->
+
+    <section
+        class="section"
+        id="features"
+    >
+
+
+        <div class="section-heading">
+
+            <div class="eyebrow">
+                WHY FOCLYRA?
+            </div>
+
+
+            <h2>
+                A planner that thinks beyond the timetable.
+            </h2>
+
+
+            <p>
+                Your study plan should respond to you —
+                not force you to respond to it.
+            </p>
+
+        </div>
+
+
+
+        <div class="feature-grid">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🧠
+                </div>
+
+                <h3>
+                    Smart Priority
+                </h3>
+
+                <p>
+                    FOCLYRA considers exam urgency,
+                    knowledge gaps, confidence,
+                    difficulty and academic importance
+                    before deciding what deserves your time.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🔮
+                </div>
+
+                <h3>
+                    What-If Planning
+                </h3>
+
+                <p>
+                    See what happens when you lose
+                    30, 60 or 120 minutes without
+                    destroying your original study plan.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🎯
+                </div>
+
+                <h3>
+                    Focus Forecast
+                </h3>
+
+                <p>
+                    FOCLYRA learns from your completed
+                    focus sessions and estimates which
+                    study patterns are currently working.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🚨
+                </div>
+
+                <h3>
+                    Plan Rescue
+                </h3>
+
+                <p>
+                    Missed a session? FOCLYRA can rebuild
+                    the remaining timetable instead of
+                    leaving you with an impossible plan.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    💚
+                </div>
+
+                <h3>
+                    Plan Health
+                </h3>
+
+                <p>
+                    FOCLYRA checks whether your schedule
+                    fits your available time and remains
+                    realistic.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📊
+                </div>
+
+                <h3>
+                    Study Insights
+                </h3>
+
+                <p>
+                    Understand your study behavior,
+                    completion patterns and where your
+                    preparation needs attention.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         DIFFERENCE
+    ========================== -->
+
+    <section class="difference">
+
+
+        <div class="difference-box">
+
+
+            <div>
+
+                <div class="eyebrow">
+                    FOCLYRA DIFFERENCE
+                </div>
+
+
+                <h2>
+                    Your plan can change.
+                    Your goal doesn't have to.
+                </h2>
+
+
+                <p>
+                    Students don't live according to
+                    perfect timetables. When something
+                    changes, the study strategy should
+                    change too.
+                </p>
+
+            </div>
+
+
+
+            <div class="difference-list">
+
+
+                <div class="difference-item">
+
+                    <strong>
+                        01
+                    </strong>
+
+                    <span>
+                        Understand the student's situation
+                    </span>
+
+                </div>
+
+
+                <div class="difference-item">
+
+                    <strong>
+                        02
+                    </strong>
+
+                    <span>
+                        Prioritize what matters most
+                    </span>
+
+                </div>
+
+
+                <div class="difference-item">
+
+                    <strong>
+                        03
+                    </strong>
+
+                    <span>
+                        Learn from actual study behavior
+                    </span>
+
+                </div>
+
+
+                <div class="difference-item">
+
+                    <strong>
+                        04
+                    </strong>
+
+                    <span>
+                        Adapt when the plan fails
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FINAL CTA
+    ========================== -->
+
+    <section class="final-cta">
+
+
+        <h2>
+            Ready to study smarter?
+        </h2>
+
+
+        <p>
+            Tell FOCLYRA about your study situation.
+        </p>
+
+
+        <button
+            id="startBtn"
+            onclick="window.location.href='planner.html'"
+        >
+            Build My Smart Plan →
+        </button>
+
+    </section>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        FOCLYRA · Plan less. Learn smarter.
+
+    </footer>
+
+
+
+    <!-- YOUR EXISTING JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+<script src="theme.js"></script>
+</body>
+
+</html>

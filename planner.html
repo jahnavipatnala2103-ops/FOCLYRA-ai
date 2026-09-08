@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FOCLYRA | Study Planner</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            FOCLYRA
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="planner.html" class="active">
+                Planner
+            </a>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+<a href="ai.html">
+    ✨ FOCLYRA AI
+</a>
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         MAIN PLANNER
+    ========================== -->
+
+    <main class="planner-page">
+
+        <section class="planner-container">
+
+            <div class="planner-header">
+
+                <p class="eyebrow">
+                    PERSONALIZED STUDY PLANNER
+                </p>
+
+                <h1>
+                    Let's build your
+                    <span>smart study plan.</span>
+                </h1>
+
+                <p>
+                    Tell FOCLYRA about your subjects, exam,
+                    available study time and current progress.
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 FORM
+            ========================== -->
+
+            <div class="planner-form">
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Your Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Example: Rahul"
+                    >
+
+                </div>
+
+
+                <!-- SUBJECTS -->
+
+                <div class="form-group">
+
+                    <label for="subjects">
+                        Your Subjects
+                    </label>
+
+                    <input
+                        type="text"
+                        id="subjects"
+                        placeholder="Example: Mathematics, Physics, C Programming, Digital Logic"
+                    >
+
+                    <p class="input-hint">
+                        Enter your subjects separated by commas.
+                    </p>
+
+                </div>
+
+
+                <!-- EXAM DATE -->
+
+                <div class="form-group">
+
+                    <label for="examDate">
+                        Exam Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="examDate"
+                    >
+
+                    <p class="input-hint">
+                        Enter your upcoming exam date.
+                    </p>
+
+                </div>
+
+
+                <!-- STUDY HOURS -->
+
+                <div class="form-group">
+
+                    <label for="studyHours">
+                        Daily Study Time
+                    </label>
+
+                    <input
+                        type="number"
+                        id="studyHours"
+                        placeholder="Example: 3"
+                        min="1"
+                        max="6"
+                        step="1"
+                    >
+
+                    <p class="input-hint">
+                        How many hours can you realistically study outside college?
+                        <strong>(1–6 hours)</strong>
+                    </p>
+
+                </div>
+
+
+                <!-- PRIORITY -->
+
+                <div class="form-group">
+
+                    <label for="priority">
+                        Which subject needs the most attention?
+                    </label>
+
+                    <select id="priority">
+
+                        <option value="">
+                            Enter your subjects first
+                        </option>
+
+                    </select>
+
+                    <p class="input-hint">
+                        FOCLYRA will only show subjects you entered above.
+                    </p>
+
+                </div>
+
+
+                <!-- PROGRESS -->
+
+                <div class="form-group">
+
+                    <label for="progress">
+                        Overall Progress
+                    </label>
+
+                    <input
+                        type="number"
+                        id="progress"
+                        placeholder="Example: 40"
+                        min="0"
+                        max="100"
+                    >
+
+                    <p class="input-hint">
+                        Approximate percentage of your syllabus completed.
+                    </p>
+
+                </div>
+
+
+                <!-- CONFIDENCE -->
+
+                <div class="form-group">
+
+                    <label for="confidence">
+                        Your Confidence Level
+                    </label>
+
+                    <input
+                        type="number"
+                        id="confidence"
+                        placeholder="Example: 5"
+                        min="1"
+                        max="10"
+                    >
+
+                    <p class="input-hint">
+                        Rate your confidence from 1 to 10.
+                    </p>
+
+                </div>
+
+
+                <!-- DIFFICULTY -->
+
+                <div class="form-group">
+
+                    <label for="difficulty">
+                        Subject Difficulty
+                    </label>
+
+                    <input
+                        type="number"
+                        id="difficulty"
+                        placeholder="Example: 7"
+                        min="1"
+                        max="10"
+                    >
+
+                    <p class="input-hint">
+                        How difficult do you find your subjects overall?
+                    </p>
+
+                </div>
+
+
+                <!-- IMPORTANCE -->
+
+                <div class="form-group">
+
+                    <label for="importance">
+                        Academic Importance
+                    </label>
+
+                    <input
+                        type="number"
+                        id="importance"
+                        placeholder="Example: 8"
+                        min="1"
+                        max="10"
+                    >
+
+                    <p class="input-hint">
+                        How important are these subjects for your exams?
+                    </p>
+
+                </div>
+
+
+                <!-- WEAK TOPICS -->
+
+                <div class="form-group">
+
+                    <label for="weakTopics">
+                        Topics You Find Difficult
+                    </label>
+
+                    <textarea
+                        id="weakTopics"
+                        rows="4"
+                        placeholder="Example: Matrices, Loops, Number Systems"
+                    ></textarea>
+
+                    <p class="input-hint">
+                        Mention topics where you need extra practice.
+                    </p>
+
+                </div>
+
+
+                <!-- GENERATE BUTTON -->
+
+                <button
+                    type="button"
+                    id="generateBtn"
+                    class="primary-btn"
+                >
+                    Generate My Smart Plan
+                </button>
+
+
+                <p class="planner-note">
+                    FOCLYRA will analyze your inputs and create
+                    a personalized study plan.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOCLYRA MAIN SCRIPT
+    ========================== -->
+
+    <script src="script/script.js"></script>
+
+
+    <!-- =========================
+         PLANNER DATA HANDLING
+    ========================== -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const subjectsInput =
+                document.getElementById("subjects");
+
+            const priorityInput =
+                document.getElementById("priority");
+
+            const examDateInput =
+                document.getElementById("examDate");
+
+            const studyHoursInput =
+                document.getElementById("studyHours");
+
+            const progressInput =
+                document.getElementById("progress");
+
+            const confidenceInput =
+                document.getElementById("confidence");
+
+            const difficultyInput =
+                document.getElementById("difficulty");
+
+            const importanceInput =
+                document.getElementById("importance");
+
+            const weakTopicsInput =
+                document.getElementById("weakTopics");
+
+            const nameInput =
+                document.getElementById("name");
+
+            const generateBtn =
+                document.getElementById("generateBtn");
+
+
+            /* =========================
+               UPDATE PRIORITY OPTIONS
+            ========================== */
+
+            function updatePriorityOptions() {
+
+                if (!subjectsInput || !priorityInput) {
+                    return;
+                }
+
+                const subjects =
+                    subjectsInput.value
+                        .split(",")
+                        .map(function (subject) {
+                            return subject.trim();
+                        })
+                        .filter(function (subject) {
+                            return subject !== "";
+                        });
+
+
+                const uniqueSubjects = [];
+
+
+                subjects.forEach(function (subject) {
+
+                    const alreadyExists =
+                        uniqueSubjects.some(function (existing) {
+
+                            return (
+                                existing.toLowerCase() ===
+                                subject.toLowerCase()
+                            );
+
+                        });
+
+
+                    if (!alreadyExists) {
+
+                        uniqueSubjects.push(subject);
+
+                    }
+
+                });
+
+
+                const currentPriority =
+                    priorityInput.value;
+
+
+                priorityInput.innerHTML = "";
+
+
+                if (uniqueSubjects.length === 0) {
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value = "";
+
+                    option.textContent =
+                        "Enter your subjects first";
+
+                    priorityInput.appendChild(option);
+
+                    return;
+
+                }
+
+
+                const defaultOption =
+                    document.createElement("option");
+
+                defaultOption.value = "";
+
+                defaultOption.textContent =
+                    "Select a subject";
+
+                priorityInput.appendChild(
+                    defaultOption
+                );
+
+
+                uniqueSubjects.forEach(function (subject) {
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value = subject;
+
+                    option.textContent = subject;
+
+                    priorityInput.appendChild(option);
+
+                });
+
+
+                const matchingSubject =
+                    uniqueSubjects.find(function (subject) {
+
+                        return (
+                            subject.toLowerCase() ===
+                            String(currentPriority)
+                                .trim()
+                                .toLowerCase()
+                        );
+
+                    });
+
+
+                if (matchingSubject) {
+
+                    priorityInput.value =
+                        matchingSubject;
+
+                } else {
+
+                    priorityInput.value = "";
+
+                }
+
+            }
+
+
+            /* =========================
+               SUBJECT INPUT
+            ========================== */
+
+            if (subjectsInput) {
+
+                subjectsInput.addEventListener(
+                    "input",
+                    updatePriorityOptions
+                );
+
+                subjectsInput.addEventListener(
+                    "change",
+                    updatePriorityOptions
+                );
+
+            }
+
+
+            /* =========================
+               STUDY HOURS VALIDATION
+            ========================== */
+
+            function validateStudyHours() {
+
+                if (!studyHoursInput) {
+                    return;
+                }
+
+                let hours =
+                    Number(
+                        studyHoursInput.value
+                    );
+
+
+                if (!Number.isFinite(hours)) {
+
+                    studyHoursInput.value = "";
+
+                    return;
+
+                }
+
+
+                if (hours < 1) {
+
+                    studyHoursInput.value = 1;
+
+                }
+
+                else if (hours > 6) {
+
+                    studyHoursInput.value = 6;
+
+                }
+
+                else {
+
+                    studyHoursInput.value =
+                        Math.round(hours);
+
+                }
+
+            }
+
+
+            if (studyHoursInput) {
+
+                studyHoursInput.addEventListener(
+                    "input",
+                    validateStudyHours
+                );
+
+                studyHoursInput.addEventListener(
+                    "change",
+                    validateStudyHours
+                );
+
+                studyHoursInput.addEventListener(
+                    "blur",
+                    validateStudyHours
+                );
+
+            }
+
+
+            /* =========================
+               EXAM DATE MINIMUM
+            ========================== */
+
+            if (examDateInput) {
+
+                const today =
+                    new Date();
+
+                const year =
+                    today.getFullYear();
+
+                const month =
+                    String(
+                        today.getMonth() + 1
+                    ).padStart(2, "0");
+
+                const day =
+                    String(
+                        today.getDate()
+                    ).padStart(2, "0");
+
+
+                const todayString =
+                    year +
+                    "-" +
+                    month +
+                    "-" +
+                    day;
+
+
+                examDateInput.min =
+                    todayString;
+
+            }
+
+
+            /* =========================
+               LOAD SAVED DATA
+            ========================== */
+
+            if (nameInput) {
+
+                nameInput.value =
+                    localStorage.getItem("name") || "";
+
+            }
+
+
+            if (subjectsInput) {
+
+                subjectsInput.value =
+                    localStorage.getItem("subjects") || "";
+
+            }
+
+
+            if (examDateInput) {
+
+                examDateInput.value =
+                    localStorage.getItem("examDate") || "";
+
+            }
+
+
+            if (studyHoursInput) {
+
+                const savedHours =
+                    localStorage.getItem("studyHours");
+
+
+                if (savedHours) {
+
+                    let hours =
+                        Number(savedHours);
+
+
+                    if (
+                        Number.isFinite(hours) &&
+                        hours >= 1 &&
+                        hours <= 6
+                    ) {
+
+                        studyHoursInput.value =
+                            Math.round(hours);
+
+                    }
+
+                }
+
+            }
+
+
+            if (progressInput) {
+
+                progressInput.value =
+                    localStorage.getItem("progress") || "";
+
+            }
+
+
+            if (confidenceInput) {
+
+                confidenceInput.value =
+                    localStorage.getItem("confidence") || "";
+
+            }
+
+
+            if (difficultyInput) {
+
+                difficultyInput.value =
+                    localStorage.getItem("difficulty") || "";
+
+            }
+
+
+            if (importanceInput) {
+
+                importanceInput.value =
+                    localStorage.getItem("importance") || "";
+
+            }
+
+
+            if (weakTopicsInput) {
+
+                weakTopicsInput.value =
+                    localStorage.getItem("weakTopics") || "";
+
+            }
+
+
+            updatePriorityOptions();
+
+
+            /* =========================
+               GENERATE SMART PLAN
+            ========================== */
+
+            if (generateBtn) {
+
+                generateBtn.addEventListener(
+                    "click",
+                    function () {
+
+
+                        /* STUDY HOURS */
+
+                        let studyHours =
+                            Number(
+                                studyHoursInput.value
+                            );
+
+
+                        if (
+                            !Number.isFinite(studyHours) ||
+                            studyHours < 1
+                        ) {
+
+                            studyHours = 1;
+
+                        }
+
+
+                        if (studyHours > 6) {
+
+                            studyHours = 6;
+
+                        }
+
+
+                        studyHours =
+                            Math.round(
+                                studyHours
+                            );
+
+
+                        studyHoursInput.value =
+                            studyHours;
+
+
+                        /* SUBJECTS */
+
+                        const subjects =
+                            subjectsInput.value.trim();
+
+
+                        /* EXAM DATE */
+
+                        const examDate =
+                            examDateInput.value;
+
+
+                        /* PRIORITY */
+
+                        const priority =
+                            priorityInput.value.trim();
+
+
+                        /* SAVE DATA */
+
+                        localStorage.setItem(
+                            "name",
+                            nameInput.value.trim()
+                        );
+
+
+                        localStorage.setItem(
+                            "subjects",
+                            subjects
+                        );
+
+
+                        localStorage.setItem(
+                            "examDate",
+                            examDate
+                        );
+
+
+                        localStorage.setItem(
+                            "studyHours",
+                            studyHours
+                        );
+
+
+                        localStorage.setItem(
+                            "priority",
+                            priority
+                        );
+
+
+                        localStorage.setItem(
+                            "progress",
+                            progressInput.value
+                        );
+
+
+                        localStorage.setItem(
+                            "confidence",
+                            confidenceInput.value
+                        );
+
+
+                        localStorage.setItem(
+                            "difficulty",
+                            difficultyInput.value
+                        );
+
+
+                        localStorage.setItem(
+                            "importance",
+                            importanceInput.value
+                        );
+
+
+                        localStorage.setItem(
+                            "weakTopics",
+                            weakTopicsInput.value.trim()
+                        );
+
+
+                        /* CREATE SMART PLAN */
+
+                        if (
+                            typeof createFoclyraPlan ===
+                            "function"
+                        ) {
+
+                            createFoclyraPlan();
+
+                        }
+
+
+                        /* GO TO DASHBOARD */
+
+                        window.location.href =
+                            "dashboard.html";
+
+                    }
+                );
+
+            }
+
+        });
+
+    </script>
+<script src="theme.js"></script>
+</body>
+
+</html>

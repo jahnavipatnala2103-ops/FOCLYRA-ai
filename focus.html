@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FOCLYRA | Focus Session</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: #f5f7ff;
+            color: #18285f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .focus-card {
+            width: 90%;
+            max-width: 650px;
+            background: white;
+            padding: 50px;
+            border-radius: 28px;
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(30, 64, 175, 0.15);
+        }
+
+        .logo {
+            color: #2563eb;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 35px;
+        }
+
+        .label {
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        #subject {
+            color: #2563eb;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        #timer {
+            font-size: 90px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin: 20px 0 35px;
+        }
+
+        button {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 15px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .secondary {
+            background: #e8edff;
+            color: #2563eb;
+        }
+
+        .message {
+            margin-top: 25px;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 30px;
+            color: #64748b;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="focus-card">
+
+
+        <div class="logo">
+            FOCLYRA
+        </div>
+
+
+        <div class="label">
+            FOCUS SESSION
+        </div>
+
+
+        <h1>
+            Deep Work Mode
+        </h1>
+
+
+        <div id="subject">
+            Your priority subject
+        </div>
+
+
+        <div id="timer">
+            25:00
+        </div>
+
+
+        <button onclick="startTimer()">
+            Start Focus
+        </button>
+
+
+        <button
+            class="secondary"
+            onclick="pauseTimer()"
+        >
+            Pause
+        </button>
+
+
+        <button
+            class="secondary"
+            onclick="resetTimer()"
+        >
+            Reset
+        </button>
+
+
+        <p
+            class="message"
+            id="message"
+        >
+            One session. One subject. Zero distractions.
+        </p>
+
+
+        <a
+            class="back"
+            href="dashboard.html"
+        >
+            ← Back to Dashboard
+        </a>
+
+
+    </div>
+
+
+
+    <script>
+
+
+        /* =========================================
+           FOCLYRA FOCUS ENGINE
+           ========================================= */
+
+
+        const SESSION_MINUTES = 25;
+
+
+        let timeLeft =
+            SESSION_MINUTES * 60;
+
+
+        let timer = null;
+
+
+        let sessionStarted = false;
+
+
+
+        /* =========================================
+           CURRENT SUBJECT
+           ========================================= */
+
+
+        function getFocusSubject() {
+
+            const priority =
+                localStorage.getItem("priority");
+
+
+            if (priority && priority.trim() !== "") {
+
+                return priority.trim();
+
+            }
+
+
+            const subjects =
+                (localStorage.getItem("subjects") || "")
+                    .split(",")
+                    .map(subject => subject.trim())
+                    .filter(Boolean);
+
+
+            if (subjects.length > 0) {
+
+                return subjects[0];
+
+            }
+
+
+            return "General Study";
+
+        }
+
+
+        const subject =
+            getFocusSubject();
+
+
+        document.getElementById("subject")
+            .textContent = subject;
+
+
+
+        /* =========================================
+           TIMER DISPLAY
+           ========================================= */
+
+
+        function updateTimer() {
+
+            const minutes =
+                Math.floor(timeLeft / 60);
+
+
+            const seconds =
+                timeLeft % 60;
+
+
+            document.getElementById("timer")
+                .textContent =
+
+                String(minutes).padStart(2, "0")
+                + ":" +
+                String(seconds).padStart(2, "0");
+
+        }
+
+
+
+        /* =========================================
+           START
+           ========================================= */
+
+
+        function startTimer() {
+
+            if (timer !== null) {
+
+                return;
+
+            }
+
+
+            sessionStarted = true;
+
+
+            document.getElementById("message")
+                .textContent =
+                "Stay focused. FOCLYRA is tracking your session.";
+
+
+            timer =
+                setInterval(function () {
+
+                    timeLeft--;
+
+
+                    updateTimer();
+
+
+                    if (timeLeft <= 0) {
+
+                        completeFocusSession();
+
+                    }
+
+                }, 1000);
+
+        }
+
+
+
+        /* =========================================
+           PAUSE
+           ========================================= */
+
+
+        function pauseTimer() {
+
+            if (timer === null) {
+
+                return;
+
+            }
+
+
+            clearInterval(timer);
+
+            timer = null;
+
+
+            document.getElementById("message")
+                .textContent =
+                "Session paused. Resume whenever you're ready.";
+
+        }
+
+
+
+        /* =========================================
+           RESET
+           ========================================= */
+
+
+        function resetTimer() {
+
+            clearInterval(timer);
+
+            timer = null;
+
+
+            timeLeft =
+                SESSION_MINUTES * 60;
+
+
+            sessionStarted = false;
+
+
+            updateTimer();
+
+
+            document.getElementById("message")
+                .textContent =
+                "One session. One subject. Zero distractions.";
+
+        }
+
+
+
+        /* =========================================
+           COMPLETE SESSION
+           ========================================= */
+
+
+        function completeFocusSession() {
+
+            clearInterval(timer);
+
+            timer = null;
+
+
+            timeLeft = 0;
+
+
+            updateTimer();
+
+
+            /*
+             * Save total studied minutes.
+             */
+
+            const oldStudiedMinutes =
+                Number(
+                    localStorage.getItem("studiedMinutes") || 0
+                );
+
+
+            localStorage.setItem(
+                "studiedMinutes",
+                oldStudiedMinutes + SESSION_MINUTES
+            );
+
+
+
+            /*
+             * Save detailed focus history.
+             */
+
+            const oldHistory =
+                JSON.parse(
+                    localStorage.getItem("focusHistory") || "[]"
+                );
+
+
+            const focusRecord = {
+
+                subject: subject,
+
+                plannedMinutes: SESSION_MINUTES,
+
+                completedMinutes: SESSION_MINUTES,
+
+                completionRate: 100,
+
+                completedAt:
+                    new Date().toISOString()
+
+            };
+
+
+            oldHistory.push(focusRecord);
+
+
+            localStorage.setItem(
+                "focusHistory",
+                JSON.stringify(oldHistory)
+            );
+
+
+
+            /*
+             * Save subject-specific learning data.
+             */
+
+            const oldSubjectData =
+                JSON.parse(
+                    localStorage.getItem("focusSubjectData") || "{}"
+                );
+
+
+            if (!oldSubjectData[subject]) {
+
+                oldSubjectData[subject] = {
+
+                    sessions: 0,
+
+                    plannedMinutes: 0,
+
+                    completedMinutes: 0
+
+                };
+
+            }
+
+
+            oldSubjectData[subject].sessions += 1;
+
+
+            oldSubjectData[subject].plannedMinutes +=
+                SESSION_MINUTES;
+
+
+            oldSubjectData[subject].completedMinutes +=
+                SESSION_MINUTES;
+
+
+            localStorage.setItem(
+                "focusSubjectData",
+                JSON.stringify(oldSubjectData)
+            );
+
+
+
+            /*
+             * Tell the student what happened.
+             */
+
+            document.getElementById("message")
+                .textContent =
+                "🎉 Focus session complete! FOCLYRA learned from this session.";
+
+        }
+
+
+
+        updateTimer();
+
+    </script>
+
+<script src="theme.js"></script>
+</body>
+
+</html>

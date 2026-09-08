@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FOCLYRA | Settings</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <script src="theme.js"></script>
+
+    <style>
+
+        .settings-page {
+
+            max-width: 950px;
+
+            margin: 50px auto;
+
+            padding: 0 25px 80px;
+
+        }
+
+
+        .settings-header {
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .settings-header h1 {
+
+            font-size: 38px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .settings-header p {
+
+            color: #667085;
+
+        }
+
+
+        .settings-card {
+
+            background: white;
+
+            border: 1px solid #e5eaf2;
+
+            border-radius: 20px;
+
+            padding: 28px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .settings-card h2 {
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .settings-description {
+
+            color: #667085;
+
+            font-size: 14px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .theme-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 15px;
+
+        }
+
+
+        .theme-option {
+
+            border: 2px solid #e5eaf2;
+
+            border-radius: 16px;
+
+            padding: 16px;
+
+            cursor: pointer;
+
+            background: white;
+
+            text-align: left;
+
+            transition: 0.2s;
+
+        }
+
+
+        .theme-option:hover {
+
+            transform: translateY(-2px);
+
+        }
+
+
+        .theme-option.selected {
+
+            border-color: #4f63ff;
+
+        }
+
+
+        .theme-preview {
+
+            height: 75px;
+
+            border-radius: 10px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .preview-light {
+
+            background: #f6f8fc;
+
+            border: 1px solid #e5eaf2;
+
+        }
+
+
+        .preview-dark {
+
+            background: #0f172a;
+
+        }
+
+
+        .preview-ocean {
+
+            background: #dff5fa;
+
+        }
+
+
+        .preview-lavender {
+
+            background: #eee7ff;
+
+        }
+
+
+        .preview-mint {
+
+            background: #e4f6ee;
+
+        }
+
+
+        .theme-name {
+
+            font-weight: 700;
+
+            font-size: 14px;
+
+        }
+
+
+        .theme-status {
+
+            font-size: 11px;
+
+            color: #667085;
+
+            margin-top: 4px;
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .theme-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <nav class="navbar">
+
+        <div class="logo">
+            FOCLYRA
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="planner.html">
+                Planner
+            </a>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="insights.html">
+                Insights
+            </a>
+
+            <a href="inbox.html">
+                Inbox
+            </a>
+
+            <a href="settings.html"
+               class="active">
+                Settings
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="settings-page">
+
+
+        <div class="settings-header">
+
+            <p class="eyebrow">
+                PERSONALIZE FOCLYRA
+            </p>
+
+            <h1>
+                Make it yours.
+            </h1>
+
+            <p>
+                Choose the appearance that feels best
+                for your study sessions.
+            </p>
+
+        </div>
+
+
+        <section class="settings-card">
+
+            <h2>
+                Appearance
+            </h2>
+
+            <p class="settings-description">
+
+                Your selected theme will be remembered
+                across FOCLYRA.
+
+            </p>
+
+
+            <div class="theme-grid">
+
+
+                <button
+                    class="theme-option"
+                    data-theme-option="light"
+                    onclick="selectTheme('light')"
+                >
+
+                    <div
+                        class="theme-preview preview-light"
+                    ></div>
+
+                    <div class="theme-name">
+                        Light
+                    </div>
+
+                    <div class="theme-status">
+                        Clean & focused
+                    </div>
+
+                </button>
+
+
+                <button
+                    class="theme-option"
+                    data-theme-option="dark"
+                    onclick="selectTheme('dark')"
+                >
+
+                    <div
+                        class="theme-preview preview-dark"
+                    ></div>
+
+                    <div class="theme-name">
+                        Dark
+                    </div>
+
+                    <div class="theme-status">
+                        Easy on the eyes
+                    </div>
+
+                </button>
+
+
+                <button
+                    class="theme-option"
+                    data-theme-option="ocean"
+                    onclick="selectTheme('ocean')"
+                >
+
+                    <div
+                        class="theme-preview preview-ocean"
+                    ></div>
+
+                    <div class="theme-name">
+                        Ocean
+                    </div>
+
+                    <div class="theme-status">
+                        Cool & calm
+                    </div>
+
+                </button>
+
+
+                <button
+                    class="theme-option"
+                    data-theme-option="lavender"
+                    onclick="selectTheme('lavender')"
+                >
+
+                    <div
+                        class="theme-preview preview-lavender"
+                    ></div>
+
+                    <div class="theme-name">
+                        Lavender
+                    </div>
+
+                    <div class="theme-status">
+                        Soft & creative
+                    </div>
+
+                </button>
+
+
+                <button
+                    class="theme-option"
+                    data-theme-option="mint"
+                    onclick="selectTheme('mint')"
+                >
+
+                    <div
+                        class="theme-preview preview-mint"
+                    ></div>
+
+                    <div class="theme-name">
+                        Mint
+                    </div>
+
+                    <div class="theme-status">
+                        Fresh & calm
+                    </div>
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <script>
+
+        function selectTheme(theme) {
+
+            if (
+                window.FoclyraTheme
+            ) {
+
+                window.FoclyraTheme.set(
+                    theme
+                );
+
+            }
+
+            updateSelectedTheme();
+
+        }
+
+
+        function updateSelectedTheme() {
+
+            const currentTheme =
+                window.FoclyraTheme
+                    ? window.FoclyraTheme.get()
+                    : "light";
+
+
+            document
+                .querySelectorAll(
+                    "[data-theme-option]"
+                )
+                .forEach(function (button) {
+
+                    button.classList.toggle(
+                        "selected",
+                        button.dataset.themeOption ===
+                        currentTheme
+                    );
+
+                });
+
+        }
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            updateSelectedTheme
+        );
+
+    </script>
+
+
+</body>
+
+</html>
