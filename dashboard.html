@@ -123,7 +123,13 @@
                 >
                     Your priority subject
                 </p>
+<button onclick="startFocus()">
+    Start Focus Session →
+</button>
 
+<a href="ai.html" class="ai-dashboard-btn">
+    🧠 Ask FOCLYRA AI
+</a>
                 <p>
                     Start with your most important subject
                     while your concentration is high.
@@ -489,16 +495,886 @@
          FOCUS BUTTON FUNCTION
     ========================== -->
 
-    <script>
+   <script>
+/* =========================================================
+   FOCLYRA — SUBJECT FOCUS + LIVE STUDY PROGRESS
+   ========================================================= */
 
-        function startFocus() {
+(function () {
 
-            window.location.href =
-                "focus.html";
+    const TIMER_KEY = "foclyraSubjectTimer";
+    const COMPLETED_KEY = "foclyraCompletedSubjects";
+
+    let timerInterval = null;
+
+    function getSubjectsSafe() {
+        try {
+            return typeof getSubjects === "function"
+                ? getSubjects()
+                : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function getCompletedSubjects() {
+        try {
+            return JSON.parse(
+                localStorage.getItem(COMPLETED_KEY)
+            ) || [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveCompletedSubjects(list) {
+        localStorage.setItem(
+            COMPLETED_KEY,
+            JSON.stringify(list)
+        );
+    }
+function getPlannedMinutes(subject) {
+
+    try {
+
+        const plan =
+            typeof loadFoclyraPlan === "function"
+                ? loadFoclyraPlan()
+                : [];
+
+        const session =
+            plan.find(function(item) {
+                return (
+                    item.subject === subject &&
+                    item.subject !== "Break"
+                );
+            });
+
+        if (session && Number(session.minutes) > 0) {
+    return Number(
+        localStorage.getItem("time_" + subject) ||
+        session.minutes
+    );
+}
+    } catch (e) {
+        console.log("Could not read planned minutes");
+    }
+
+    return 25;
+}
+    function getTimerState() {
+        try {
+            return JSON.parse(
+                localStorage.getItem(TIMER_KEY)
+            );
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function saveTimerState(state) {
+        localStorage.setItem(
+            TIMER_KEY,
+            JSON.stringify(state)
+        );
+    }
+
+    function getStudiedMinutesSafe() {
+        return Number(
+            localStorage.getItem("studiedMinutes")
+        ) || 0;
+    }
+
+    function addOneStudiedMinute() {
+
+        const current =
+            getStudiedMinutesSafe();
+
+        localStorage.setItem(
+            "studiedMinutes",
+            String(current + 1)
+        );
+
+        updateDashboardProgress();
+    }
+
+    function updateDashboardProgress() {
+
+        const minutes =
+            getStudiedMinutesSafe();
+
+        const data =
+            typeof getStudentData === "function"
+                ? getStudentData()
+                : { studyHours: 1 };
+
+        const goal =
+            Math.max(
+                1,
+                Number(data.studyHours || 1) * 60
+            );
+
+        const percentage =
+            Math.min(
+                100,
+                Math.round(
+                    (minutes / goal) * 100
+                )
+            );
+
+        const fill =
+            document.getElementById(
+                "progressFill"
+            );
+
+        const text =
+            document.getElementById(
+                "progressText"
+            );
+
+        const time =
+            document.getElementById(
+                "progressTime"
+            );
+
+        if (fill) {
+            fill.style.width =
+                percentage + "%";
+        }
+
+        if (text) {
+            text.textContent =
+                percentage +
+                "% completed";
+        }
+
+        if (time) {
+            time.textContent =
+                minutes +
+                " minutes studied";
+        }
+    }
+
+
+    function formatTime(seconds) {
+
+        const mins =
+            Math.floor(seconds / 60);
+
+        const secs =
+            seconds % 60;
+
+        return (
+            String(mins).padStart(2, "0") +
+            ":" +
+            String(secs).padStart(2, "0")
+        );
+    }
+
+
+    function renderSubjectFocus() {
+
+        const container =
+            document.getElementById(
+                "subjectList"
+            );
+
+        if (!container) {
+            return;
+        }
+
+        const subjects =
+            getSubjectsSafe();
+
+        const completed =
+            getCompletedSubjects();
+
+        const activeTimer =
+            getTimerState();
+
+        container.innerHTML = "";
+
+        subjects.forEach(
+            function (subject, index) {
+
+                const safeSubject =
+                    String(subject);
+
+                const isCompleted =
+                    completed.includes(
+                        safeSubject
+                    );
+
+                const isActive =
+                    activeTimer &&
+                    activeTimer.subject ===
+                        safeSubject;
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.style.cssText = `
+                    padding:14px;
+                    margin:10px 0;
+                    border:1px solid #e5e7eb;
+                    border-radius:14px;
+                    background:#ffffff;
+                `;
+
+                card.innerHTML = `
+                    <div style="
+                        display:flex;
+                        align-items:center;
+                        justify-content:space-between;
+                        gap:10px;
+                    ">
+
+                        <label style="
+                            display:flex;
+                            align-items:center;
+                            gap:10px;
+                            font-weight:700;
+                            cursor:pointer;
+                        ">
+
+                            <input
+                                type="checkbox"
+                                class="subject-complete-check"
+                                data-subject="${safeSubject}"
+                                ${isCompleted ? "checked" : ""}
+                            >
+
+                            <span>
+                                ${index + 1}.
+                                ${safeSubject}
+                            </span>
+
+                        </label>
+
+                        <span style="
+                            font-size:12px;
+                            color:#64748b;
+                        ">
+                            ${isCompleted
+                                ? "Completed ✓"
+                                : "25 min session"}
+                        </span>
+
+                    </div>
+
+                    <div style="
+                        margin-top:12px;
+                        display:flex;
+                        align-items:center;
+                        gap:10px;
+                        flex-wrap:wrap;
+                    ">
+
+                        <strong
+                            id="timer-${index}"
+                            style="
+                                font-size:22px;
+                                min-width:70px;
+                                color:#4f46e5;
+                            "
+                        >
+                            ${
+                                isActive
+                                    ? formatTime(
+                                        activeTimer.remaining
+                                    )
+                                    : "25:00"
+                            }
+                        </strong>
+
+                        <button
+                            class="subject-start-btn"
+                            data-subject="${safeSubject}"
+                            style="
+                                border:0;
+                                background:#6366f1;
+                                color:white;
+                                padding:9px 14px;
+                                border-radius:9px;
+                                font-weight:700;
+                                cursor:pointer;
+                            "
+                        >
+                            ${
+                                isActive &&
+                                activeTimer.running
+                                    ? "Running..."
+                                    : "▶ Start Focus"
+                            }
+                        </button>
+
+                        ${
+                            isActive
+                                ? `
+                                    <button
+                                        class="subject-pause-btn"
+                                        style="
+                                            border:0;
+                                            background:#f59e0b;
+                                            color:white;
+                                            padding:9px 14px;
+                                            border-radius:9px;
+                                            font-weight:700;
+                                            cursor:pointer;
+                                        "
+                                    >
+                                        ⏸ Pause
+                                    </button>
+
+                                    <button
+                                        class="subject-reset-btn"
+                                        style="
+                                            border:0;
+                                            background:#ef4444;
+                                            color:white;
+                                            padding:9px 14px;
+                                            border-radius:9px;
+                                            font-weight:700;
+                                            cursor:pointer;
+                                        "
+                                    >
+                                        ↻ Reset
+                                    </button>
+                                `
+                                : ""
+                        }
+
+                    </div>
+                `;
+
+                container.appendChild(card);
+            }
+        );
+
+
+        /* CHECKBOXES */
+
+        container
+            .querySelectorAll(
+                ".subject-complete-check"
+            )
+            .forEach(
+                function (checkbox) {
+
+                    checkbox.addEventListener(
+                        "change",
+                        function () {
+
+                            const subject =
+                                this.dataset.subject;
+
+                            let list =
+                                getCompletedSubjects();
+
+                            if (this.checked) {
+
+                                if (
+                                    !list.includes(
+                                        subject
+                                    )
+                                ) {
+                                    list.push(subject);
+                                }
+
+                            } else {
+
+                                list =
+                                    list.filter(
+                                        function (item) {
+                                            return (
+                                                item !==
+                                                subject
+                                            );
+                                        }
+                                    );
+                            }
+
+                            saveCompletedSubjects(
+                                list
+                            );
+
+                            renderSubjectFocus();
+                        }
+                    );
+                }
+            );
+
+
+        /* START BUTTONS */
+
+        container
+            .querySelectorAll(
+                ".subject-start-btn"
+            )
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            startSubjectTimer(
+                                this.dataset.subject
+                            );
+
+                        }
+                    );
+                }
+            );
+
+
+        /* PAUSE */
+
+        container
+            .querySelectorAll(
+                ".subject-pause-btn"
+            )
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            pauseSubjectTimer();
+
+                        }
+                    );
+                }
+            );
+
+
+        /* RESET */
+
+        container
+            .querySelectorAll(
+                ".subject-reset-btn"
+            )
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            resetSubjectTimer();
+
+                        }
+                    );
+                }
+            );
+    }
+
+function getPlannedMinutes(subject) {
+
+    const plan =
+        typeof loadFoclyraPlan === "function"
+            ? loadFoclyraPlan()
+            : [];
+
+    const session =
+        plan.find(function(item) {
+            return (
+                item.subject === subject &&
+                item.subject !== "Break"
+            );
+        });
+
+    return Number(
+        session && session.minutes
+            ? session.minutes
+            : 25
+    );
+}
+    function startSubjectTimer(subject) {
+
+        let state =
+            getTimerState();
+
+        /*
+         * Don't allow two subjects
+         * to run at the same time.
+         */
+
+        if (
+            state &&
+            state.running &&
+            state.subject !== subject
+        ) {
+
+            alert(
+                "Finish or pause the current study session first."
+            );
+
+            return;
+        }
+
+
+        if (
+            !state ||
+            state.subject !== subject
+        ) {
+
+            state = {
+                subject: subject,
+                remaining:
+    getPlannedMinutes(subject) * 60,
+
+totalSeconds:
+    getPlannedMinutes(subject) * 60,
+                running: true,
+                lastTick: Date.now(),
+                countedMinutes: 0
+            };
+            state = {
+    subject: subject,
+
+    remaining:
+        getPlannedMinutes(subject) * 60,
+
+    totalSeconds:
+        getPlannedMinutes(subject) * 60,
+
+    running: true,
+
+    lastTick: Date.now(),
+
+    countedMinutes: 0
+};
+
+        } else {
+
+            state.running = true;
+            state.lastTick = Date.now();
 
         }
 
-    </script>
+        saveTimerState(state);
+
+        startTimerLoop();
+
+        renderSubjectFocus();
+    }
+
+
+    function startTimerLoop() {
+
+        clearInterval(timerInterval);
+
+        timerInterval =
+            setInterval(
+                function () {
+
+                    let state =
+                        getTimerState();
+
+                    if (
+                        !state ||
+                        !state.running
+                    ) {
+
+                        clearInterval(
+                            timerInterval
+                        );
+
+                        return;
+                    }
+
+
+                    const now =
+                        Date.now();
+
+                    const elapsed =
+                        Math.floor(
+                            (
+                                now -
+                                state.lastTick
+                            ) / 1000
+                        );
+
+                    if (elapsed <= 0) {
+                        return;
+                    }
+
+
+                    state.remaining =
+                        Math.max(
+                            0,
+                            state.remaining -
+                                elapsed
+                        );
+
+                    state.lastTick =
+                        now;
+
+
+                    /*
+                     * Every 60 seconds actually
+                     * studied = +1 minute.
+                     */
+
+                    const totalSeconds =
+    state.totalSeconds ||
+    (getPlannedMinutes(state.subject) * 60);
+
+const studiedSeconds =
+    totalSeconds -
+    state.remaining;
+
+                    const fullMinutes =
+                        Math.floor(
+                            studiedSeconds / 60
+                        );
+
+                    while (
+                        state.countedMinutes <
+                        fullMinutes
+                    ) {
+
+                        addOneStudiedMinute();
+
+                        state.countedMinutes++;
+                    }
+
+
+                    if (
+                        state.remaining <= 0
+                    ) {
+
+                        state.running =
+                            false;
+
+                        localStorage.removeItem(
+                            TIMER_KEY
+                        );
+
+                        clearInterval(
+                            timerInterval
+                        );
+
+                        markSubjectCompleted(
+                            state.subject
+                        );
+
+                        alert(
+                            "🎉 " +
+                            state.subject +
+                            " focus session completed!"
+                        );
+
+                        renderSubjectFocus();
+
+                        return;
+                    }
+
+
+                    saveTimerState(state);
+
+                    renderSubjectFocus();
+
+                },
+                1000
+            );
+    }
+
+
+    function pauseSubjectTimer() {
+
+        const state =
+            getTimerState();
+
+        if (!state) {
+            return;
+        }
+
+        state.running = false;
+
+        state.lastTick =
+            Date.now();
+
+        saveTimerState(state);
+
+        clearInterval(
+            timerInterval
+        );
+
+        renderSubjectFocus();
+    }
+
+
+    function resetSubjectTimer() {
+
+        clearInterval(
+            timerInterval
+        );
+
+        localStorage.removeItem(
+            TIMER_KEY
+        );
+
+        renderSubjectFocus();
+    }
+
+
+    function markSubjectCompleted(subject) {
+
+        let list =
+            getCompletedSubjects();
+
+        if (!list.includes(subject)) {
+
+            list.push(subject);
+
+            saveCompletedSubjects(
+                list
+            );
+        }
+    }
+
+
+    /*
+     * Restore active timer when the
+     * dashboard is reopened.
+     */
+
+    function restoreTimer() {
+
+        const state =
+            getTimerState();
+
+        if (!state) {
+            return;
+        }
+
+        if (state.running) {
+
+            const now =
+                Date.now();
+
+            const elapsed =
+                Math.floor(
+                    (
+                        now -
+                        state.lastTick
+                    ) / 1000
+                );
+
+            state.remaining =
+                Math.max(
+                    0,
+                    state.remaining -
+                        elapsed
+                );
+
+            state.lastTick =
+                now;
+
+            const studiedSeconds =
+                (
+                    25 * 60
+                ) -
+                state.remaining;
+
+            const fullMinutes =
+                Math.floor(
+                    studiedSeconds / 60
+                );
+
+            while (
+                state.countedMinutes <
+                fullMinutes
+            ) {
+
+                addOneStudiedMinute();
+
+                state.countedMinutes++;
+            }
+
+            saveTimerState(state);
+
+            if (
+                state.remaining > 0
+            ) {
+
+                startTimerLoop();
+
+            } else {
+
+                localStorage.removeItem(
+                    TIMER_KEY
+                );
+            }
+        }
+    }
+
+
+    /*
+     * Today's Focus button now
+     * scrolls to subjects instead of
+     * opening focus.html.
+     */
+
+    window.startFocus =
+        function () {
+
+            const subjectList =
+                document.getElementById(
+                    "subjectList"
+                );
+
+            if (subjectList) {
+
+                subjectList.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
+
+        };
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            renderSubjectFocus();
+
+            updateDashboardProgress();
+
+            restoreTimer();
+
+        }
+    );
+
+
+    /*
+     * Keep progress visible after
+     * returning to this page.
+     */
+
+    window.addEventListener(
+        "pageshow",
+        function () {
+
+            renderSubjectFocus();
+
+            updateDashboardProgress();
+
+            restoreTimer();
+
+        }
+    );
+
+})();
+</script>
 
 <script src="theme.js"></script>
 </body>

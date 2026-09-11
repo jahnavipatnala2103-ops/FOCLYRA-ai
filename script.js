@@ -5387,3 +5387,728 @@ function setupGoogleCalendarSync() {
     };
 }
 setupGoogleCalendarSync();
+/* =========================================================
+   FOCLYRA FOCUS CHECKLIST + SUBJECT COMPLETION
+   ========================================================= */
+
+(function () {
+
+    function getFocusSubject() {
+        const saved = localStorage.getItem("focusSubject");
+
+        if (saved && saved.trim()) {
+            return saved.trim();
+        }
+
+        try {
+            return getValidPriority() || getBestSubject() || "Study Session";
+        } catch (e) {
+            return "Study Session";
+        }
+    }
+
+    function getCompletedSubjects() {
+        try {
+            return JSON.parse(
+                localStorage.getItem("foclyraCompletedSubjects") || "[]"
+            );
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveCompletedSubject(subject) {
+        const completed = getCompletedSubjects();
+
+        if (!completed.includes(subject)) {
+            completed.push(subject);
+        }
+
+        localStorage.setItem(
+            "foclyraCompletedSubjects",
+            JSON.stringify(completed)
+        );
+    }
+
+    function createFocusChecklist() {
+
+        if (!window.location.pathname.endsWith("focus.html")) {
+            return;
+        }
+
+        if (document.getElementById("foclyraFocusChecklist")) {
+            return;
+        }
+
+        let subjects = [];
+
+        try {
+            subjects = getSubjects();
+        } catch (e) {
+            subjects = [];
+        }
+
+        if (!subjects.length) {
+            subjects = ["Mathematics", "English", "Physics"];
+        }
+
+        const completed = getCompletedSubjects();
+
+        const box = document.createElement("div");
+
+        box.id = "foclyraFocusChecklist";
+
+        box.style.cssText =
+            "margin:24px auto;" +
+            "max-width:520px;" +
+            "padding:18px;" +
+            "background:#f8faff;" +
+            "border:1px solid #dbe5ff;" +
+            "border-radius:16px;" +
+            "box-shadow:0 8px 25px rgba(37,99,235,0.08);";
+
+        let html =
+            "<h3 style='margin:0 0 12px;color:#172554;'>" +
+            "📋 Today's Study Checklist" +
+            "</h3>";
+
+        subjects.forEach(function (subject) {
+
+            const clean = String(subject).trim();
+
+            const isDone = completed.some(function (item) {
+                return String(item).toLowerCase() === clean.toLowerCase();
+            });
+
+            html +=
+                "<div style='" +
+                "display:flex;" +
+                "justify-content:space-between;" +
+                "align-items:center;" +
+                "padding:10px 0;" +
+                "border-bottom:1px solid #e5e7eb;" +
+                "'>" +
+
+                "<span style='font-weight:700;color:#334155;'>" +
+                (isDone ? "✅ " : "⬜ ") +
+                clean +
+                "</span>" +
+
+                "<span style='font-size:12px;color:" +
+                (isDone ? "#16a34a" : "#64748b") +
+                ";font-weight:700;'>" +
+                (isDone ? "Completed" : "Remaining") +
+                "</span>" +
+
+                "</div>";
+        });
+
+        box.innerHTML = html;
+
+        const timer =
+            document.querySelector("[data-focus-timer]") ||
+            document.getElementById("timer");
+
+        if (timer && timer.parentElement) {
+            timer.parentElement.appendChild(box);
+        } else {
+            document.body.appendChild(box);
+        }
+    }
+
+
+    /* Remember the subject when the student starts Focus Mode */
+
+    window.addEventListener("DOMContentLoaded", function () {
+
+        const dashboardButton =
+            document.querySelector(
+                "button[onclick='startFocus()']"
+            );
+
+        if (dashboardButton) {
+
+            dashboardButton.addEventListener("click", function () {
+
+                try {
+                    const subject =
+                        getValidPriority() ||
+                        getBestSubject() ||
+                        "Study Session";
+
+                    localStorage.setItem(
+                        "focusSubject",
+                        subject
+                    );
+
+                } catch (e) {
+                    localStorage.setItem(
+                        "focusSubject",
+                        "Study Session"
+                    );
+                }
+
+            });
+
+        }
+
+        setTimeout(createFocusChecklist, 300);
+    });
+
+
+    /*
+       Replace completion behavior with
+       subject + remaining-time feedback.
+    */
+
+    completeFocusSession = function () {
+
+        const subject = getFocusSubject();
+
+        saveFocusSession(25);
+
+        saveCompletedSubject(subject);
+
+        let remainingMinutes = 0;
+
+        try {
+
+            const plan = loadFoclyraPlan();
+
+            remainingMinutes = plan
+                .filter(function (session) {
+                    return session.subject !== "Break";
+                })
+                .reduce(function (total, session) {
+
+                    return total +
+                        (Number(session.minutes) || 0);
+
+                }, 0);
+
+            remainingMinutes =
+                Math.max(0, remainingMinutes - 25);
+
+        } catch (e) {
+            remainingMinutes = 0;
+        }
+
+
+        foclyraTimerSeconds = 25 * 60;
+
+        foclyraTimerRunning = false;
+
+        clearInterval(foclyraTimerInterval);
+
+        foclyraTimerInterval = null;
+
+        updateFocusTimerDisplay();
+
+
+        const status =
+            document.getElementById("timerStatus");
+
+        if (status) {
+
+            status.textContent =
+                "✅ " +
+                subject +
+                " completed — 25 minutes!";
+        }
+
+
+        createFocusChecklist();
+
+
+        alert(
+            "✅ " +
+            subject +
+            " completed!\n\n" +
+            "⏱️ 25 minutes studied.\n" +
+            "📚 " +
+            remainingMinutes +
+            " minutes remaining in today's study plan."
+        );
+    };
+
+
+    setTimeout(createFocusChecklist, 500);
+
+})();
+/* =========================================================
+   FOCLYRA TIMER PERSISTENCE PATCH
+   Keeps timer + study progress when moving between pages
+   ========================================================= */
+
+(function () {
+
+    const TIMER_KEY = "foclyraTimerState";
+
+    function saveTimerState() {
+
+        localStorage.setItem(
+            TIMER_KEY,
+            JSON.stringify({
+                seconds: foclyraTimerSeconds,
+                running: foclyraTimerRunning,
+                subject:
+                    localStorage.getItem("focusSubject") ||
+                    "Study Session"
+            })
+        );
+    }
+
+
+    function loadTimerState() {
+
+        try {
+
+            const saved =
+                JSON.parse(
+                    localStorage.getItem(TIMER_KEY)
+                );
+
+            if (!saved) {
+                return false;
+            }
+
+            foclyraTimerSeconds =
+                Math.max(
+                    0,
+                    Number(saved.seconds) || 25 * 60
+                );
+
+            foclyraTimerRunning =
+                saved.running === true;
+
+            if (saved.subject) {
+                localStorage.setItem(
+                    "focusSubject",
+                    saved.subject
+                );
+            }
+
+            return true;
+
+        } catch (e) {
+
+            return false;
+        }
+    }
+
+
+    function clearTimerState() {
+
+        localStorage.removeItem(TIMER_KEY);
+    }
+
+
+    /*
+       SAVE TIMER EVERY SECOND
+    */
+
+    const originalStartFocusTimer =
+        startFocusTimer;
+
+    startFocusTimer = function () {
+
+        originalStartFocusTimer();
+
+        saveTimerState();
+
+        clearInterval(
+            window.foclyraPersistenceInterval
+        );
+
+        window.foclyraPersistenceInterval =
+            setInterval(
+                function () {
+
+                    if (
+                        typeof foclyraTimerSeconds !==
+                        "undefined"
+                    ) {
+
+                        saveTimerState();
+
+                    }
+
+                },
+                1000
+            );
+    };
+
+
+    /*
+       PAUSE = SAVE CURRENT TIME
+    */
+
+    const originalPauseFocusTimer =
+        pauseFocusTimer;
+
+    pauseFocusTimer = function () {
+
+        originalPauseFocusTimer();
+
+        saveTimerState();
+
+        clearInterval(
+            window.foclyraPersistenceInterval
+        );
+
+    };
+
+
+    /*
+       RESET = REALLY RESET TIMER
+    */
+
+    const originalResetFocusTimer =
+        resetFocusTimer;
+
+    resetFocusTimer = function () {
+
+        originalResetFocusTimer();
+
+        clearTimerState();
+
+        clearInterval(
+            window.foclyraPersistenceInterval
+        );
+
+    };
+
+
+    /*
+       WHEN 25 MINUTES ARE COMPLETED
+       KEEP STUDY PROGRESS SAVED
+    */
+
+    const originalCompleteFocusSession =
+        completeFocusSession;
+
+    completeFocusSession = function () {
+
+        originalCompleteFocusSession();
+
+        clearTimerState();
+
+        clearInterval(
+            window.foclyraPersistenceInterval
+        );
+
+        /*
+           Make absolutely sure the dashboard
+           can see the completed study time.
+        */
+
+        const current =
+            Number(
+                localStorage.getItem(
+                    "studiedMinutes"
+                )
+            ) || 0;
+
+        localStorage.setItem(
+            "studiedMinutes",
+            String(current)
+        );
+
+    };
+
+
+    /*
+       RESTORE WHEN FOCUS PAGE OPENS
+    */
+
+    window.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            if (
+                window.location.pathname
+                    .toLowerCase()
+                    .endsWith("focus.html")
+            ) {
+
+                loadTimerState();
+
+                updateFocusTimerDisplay();
+
+                updateStudyMinutesDisplay();
+
+                updateDailyGoal();
+
+                updateConsistency();
+
+            }
+
+        }
+    );
+
+
+    /*
+       SAVE BEFORE LEAVING THE PAGE
+    */
+
+    window.addEventListener(
+        "beforeunload",
+        function () {
+
+            if (
+                typeof foclyraTimerSeconds !==
+                "undefined"
+            ) {
+
+                saveTimerState();
+
+            }
+
+        }
+    );
+
+})();
+/* =========================================================
+   FOCLYRA FINAL FOCUS SESSION PERSISTENCE
+   ========================================================= */
+
+(function () {
+
+    const TIMER_KEY = "foclyraActiveSession";
+
+    function getTimerState() {
+        try {
+            return JSON.parse(
+                localStorage.getItem(TIMER_KEY)
+            );
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function saveTimerState() {
+
+        const state = {
+            seconds: foclyraTimerSeconds,
+            running: foclyraTimerRunning,
+            subject:
+                localStorage.getItem("focusSubject") ||
+                ""
+        };
+
+        localStorage.setItem(
+            TIMER_KEY,
+            JSON.stringify(state)
+        );
+    }
+
+    function restoreTimerState() {
+
+        const state = getTimerState();
+
+        if (!state) {
+            return;
+        }
+
+        if (
+            typeof state.seconds === "number" &&
+            state.seconds > 0
+        ) {
+            foclyraTimerSeconds =
+                state.seconds;
+        }
+
+        foclyraTimerRunning =
+            !!state.running;
+
+        updateFocusTimerDisplay();
+
+        const status =
+            document.getElementById(
+                "timerStatus"
+            );
+
+        if (status) {
+
+            status.textContent =
+                state.running
+                    ? "Focus session in progress"
+                    : "Focus session paused";
+        }
+
+        /*
+         * If the session was running when
+         * the user left the page, continue it.
+         */
+        if (
+            state.running &&
+            !foclyraTimerInterval
+        ) {
+
+            foclyraTimerRunning =
+                true;
+
+            foclyraTimerInterval =
+                setInterval(
+                    function () {
+
+                        foclyraTimerSeconds--;
+
+                        updateFocusTimerDisplay();
+
+                        saveTimerState();
+
+                        if (
+                            foclyraTimerSeconds <= 0
+                        ) {
+
+                            clearInterval(
+                                foclyraTimerInterval
+                            );
+
+                            foclyraTimerInterval =
+                                null;
+
+                            foclyraTimerRunning =
+                                false;
+
+                            localStorage.removeItem(
+                                TIMER_KEY
+                            );
+
+                            completeFocusSession();
+                        }
+
+                    },
+                    1000
+                );
+        }
+    }
+
+
+    /*
+     * Save whenever the user leaves
+     * Focus Mode.
+     */
+    window.addEventListener(
+        "beforeunload",
+        function () {
+
+            if (
+                foclyraTimerRunning ||
+                foclyraTimerSeconds < 25 * 60
+            ) {
+                saveTimerState();
+            }
+
+        }
+    );
+
+
+    /*
+     * Rebind buttons AFTER all existing
+     * FOCLYRA timer setup has finished.
+     */
+    window.addEventListener(
+        "load",
+        function () {
+
+            setTimeout(
+                function () {
+
+                    const startButtons =
+                        document.querySelectorAll(
+                            "[data-focus-start], #startTimer, #startBtn"
+                        );
+
+                    const pauseButtons =
+                        document.querySelectorAll(
+                            "[data-focus-pause], #pauseTimer, #pauseBtn"
+                        );
+
+                    const resetButtons =
+                        document.querySelectorAll(
+                            "[data-focus-reset], #resetTimer, #resetBtn"
+                        );
+
+
+                    /*
+                     * START
+                     */
+                    startButtons.forEach(
+                        function (button) {
+
+                            button.onclick =
+                                function () {
+
+                                    startFocusTimer();
+
+                                    saveTimerState();
+
+                                };
+
+                        }
+                    );
+
+
+                    /*
+                     * PAUSE
+                     */
+                    pauseButtons.forEach(
+                        function (button) {
+
+                            button.onclick =
+                                function () {
+
+                                    pauseFocusTimer();
+
+                                    saveTimerState();
+
+                                };
+
+                        }
+                    );
+
+
+                    /*
+                     * RESET
+                     */
+                    resetButtons.forEach(
+                        function (button) {
+
+                            button.onclick =
+                                function () {
+
+                                    resetFocusTimer();
+
+                                    localStorage.removeItem(
+                                        TIMER_KEY
+                                    );
+
+                                };
+
+                        }
+                    );
+
+
+                    /*
+                     * Restore an existing session
+                     */
+                    if (
+                        document.querySelector(
+                            "[data-focus-start], #startTimer, #startBtn"
+                        )
+                    ) {
+
+                        restoreTimerState();
+
+                    }
+
+                },
+                100
+            );
+
+        }
+    );
+
+})();

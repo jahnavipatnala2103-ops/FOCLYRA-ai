@@ -1,0 +1,2165 @@
+/* =========================================================
+   FOCLYRA
+   SMART STUDY PLANNER
+   Clean • Modern • Cute • Professional
+   ========================================================= */
+
+
+/* =========================================================
+   1. ROOT
+   ========================================================= */
+
+:root {
+    --primary: #5b6cff;
+    --primary-dark: #4655e8;
+    --secondary: #7c5cff;
+
+    --accent: #ff79b0;
+    --accent-soft: #fff0f7;
+
+    --blue-soft: #eef2ff;
+    --purple-soft: #f3efff;
+
+    --green: #35b982;
+    --green-soft: #eafaf3;
+
+    --yellow: #f5b942;
+    --yellow-soft: #fff8e7;
+
+    --red: #ef6b7a;
+    --red-soft: #fff0f2;
+
+    --text: #20243a;
+    --text-light: #68708a;
+    --text-muted: #9298ad;
+
+    --white: #ffffff;
+    --background: #f7f8ff;
+
+    --border: #e7e9f4;
+
+    --shadow-small:
+        0 6px 20px rgba(48, 55, 100, 0.07);
+
+    --shadow:
+        0 15px 40px rgba(48, 55, 100, 0.10);
+
+    --shadow-large:
+        0 25px 70px rgba(48, 55, 100, 0.14);
+
+    --radius-small: 12px;
+    --radius: 20px;
+    --radius-large: 28px;
+}
+
+
+/* =========================================================
+   2. RESET
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(124, 92, 255, 0.09),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(255, 121, 176, 0.08),
+            transparent 25%
+        ),
+        var(--background);
+
+    min-height: 100vh;
+
+    line-height: 1.6;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* =========================================================
+   3. NAVBAR
+   ========================================================= */
+
+nav,
+.navbar {
+    width: 100%;
+    min-height: 74px;
+
+    padding: 0 6%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgba(255, 255, 255, 0.88);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom:
+        1px solid rgba(231, 233, 244, 0.8);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-links a {
+    padding: 9px 16px;
+
+    border-radius: 999px;
+
+    color: var(--text-light);
+
+    font-size: 14px;
+    font-weight: 650;
+
+    transition: all 0.25s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+    background: var(--blue-soft);
+    transform: translateY(-1px);
+}
+
+.nav-links a.active {
+    color: var(--primary);
+    background: var(--blue-soft);
+}
+
+
+/* =========================================================
+   4. GENERAL BUTTONS
+   ========================================================= */
+
+button {
+    border: none;
+    outline: none;
+}
+
+.primary-btn {
+    width: 100%;
+
+    border-radius: 16px;
+
+    padding: 15px 20px;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+    box-shadow:
+        0 12px 25px rgba(91, 108, 255, 0.25);
+
+    transition: all 0.25s ease;
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 18px 35px rgba(91, 108, 255, 0.30);
+}
+
+.primary-btn:active {
+    transform: translateY(-1px);
+}
+
+.secondary-btn {
+    border: 1px solid var(--border);
+
+    background: white;
+    color: var(--text);
+
+    border-radius: 12px;
+
+    padding: 10px 15px;
+
+    font-weight: 700;
+
+    transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+    border-color: #cbd0f7;
+    color: var(--primary);
+    background: var(--blue-soft);
+}
+
+
+/* =========================================================
+   5. PLANNER
+   ========================================================= */
+
+.planner-page {
+    min-height: calc(100vh - 74px);
+    padding: 70px 20px;
+}
+
+.planner-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.planner-header {
+    text-align: center;
+    margin-bottom: 42px;
+}
+
+.eyebrow,
+.small-title {
+    display: inline-block;
+
+    color: var(--primary);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+.eyebrow {
+    padding: 7px 13px;
+
+    border-radius: 999px;
+
+    background: var(--purple-soft);
+
+    color: var(--secondary);
+
+    margin-bottom: 15px;
+}
+
+.planner-header h1 {
+    font-size: clamp(34px, 5vw, 52px);
+
+    line-height: 1.1;
+
+    letter-spacing: -1.5px;
+
+    margin-bottom: 15px;
+}
+
+.planner-header h1 span {
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary),
+            var(--accent)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.planner-header p {
+    max-width: 620px;
+
+    margin: 0 auto;
+
+    color: var(--text-light);
+
+    font-size: 16px;
+}
+
+.planner-form {
+    background: rgba(255, 255, 255, 0.94);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-large);
+
+    padding: clamp(25px, 5vw, 45px);
+
+    box-shadow: var(--shadow);
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 750;
+
+    color: var(--text);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+
+    border: 1px solid var(--border);
+
+    background: #fbfbff;
+
+    color: var(--text);
+
+    padding: 13px 15px;
+
+    border-radius: 14px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition: all 0.25s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #a6aabd;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #cdd2f5;
+    background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--primary);
+
+    background: white;
+
+    box-shadow:
+        0 0 0 4px rgba(91, 108, 255, 0.10);
+}
+
+.input-hint {
+    margin-top: 7px;
+
+    font-size: 12px;
+
+    color: var(--text-muted);
+}
+
+.input-hint strong {
+    color: var(--primary);
+}
+
+.planner-note {
+    text-align: center;
+
+    margin-top: 15px;
+
+    color: var(--text-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   6. DASHBOARD
+   ========================================================= */
+
+.dashboard {
+    width: 100%;
+    max-width: 1250px;
+
+    margin: 0 auto;
+
+    padding: 45px 25px 80px;
+}
+
+.dashboard-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+    font-size: clamp(30px, 4vw, 44px);
+
+    line-height: 1.1;
+}
+
+.dashboard-header p {
+    color: var(--text-light);
+    margin-top: 7px;
+}
+
+.dashboard-header span {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   7. DASHBOARD GRID
+   ========================================================= */
+
+.dashboard-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+}
+
+
+/* =========================================================
+   8. DASHBOARD CARDS
+   ========================================================= */
+
+.dashboard-card,
+.card,
+.stat-card,
+.info-card {
+    background: rgba(255, 255, 255, 0.94);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow-small);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.dashboard-card:hover,
+.card:hover,
+.stat-card:hover,
+.info-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: var(--shadow);
+}
+
+.dashboard-card {
+    min-height: 235px;
+
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: var(--blue-soft);
+
+    font-size: 21px;
+
+    margin-bottom: 15px;
+}
+
+.dashboard-card h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.dashboard-card > p {
+    color: var(--text-light);
+    font-size: 13px;
+}
+
+.dashboard-card button {
+    margin-top: auto;
+
+    width: 100%;
+
+    padding: 11px 14px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+    color: white;
+
+    font-weight: 750;
+
+    transition: all 0.2s ease;
+}
+
+.dashboard-card button:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   9. TODAY'S FOCUS
+   ========================================================= */
+
+.focus-card {
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f5f6ff
+        );
+}
+
+.big-subject {
+    color: var(--primary) !important;
+
+    font-size: 22px !important;
+
+    font-weight: 850;
+
+    margin-bottom: 7px;
+}
+
+.focus-card button {
+    background:
+        linear-gradient(
+            135deg,
+            #5b6cff,
+            #7c5cff
+        );
+}
+
+
+/* =========================================================
+   10. EXAM COUNTDOWN
+   ========================================================= */
+
+.countdown {
+    margin: 10px 0 12px;
+
+    padding: 14px;
+
+    border-radius: 14px;
+
+    background: var(--blue-soft);
+
+    border: 1px solid #dfe4ff;
+
+    color: var(--primary);
+
+    font-size: 25px;
+
+    font-weight: 900;
+
+    text-align: center;
+}
+
+.exam-motivation {
+    padding: 12px;
+
+    margin-bottom: 10px;
+
+    border-radius: 13px;
+
+    background: var(--purple-soft);
+
+    text-align: center;
+
+    color: var(--secondary);
+
+    font-size: 12px;
+}
+
+.exam-motivation strong {
+    display: block;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.exam-motivation span {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 11px;
+
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+   11. DAILY STUDY GOAL
+   ========================================================= */
+
+.hours {
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 7px;
+
+    margin: 18px 0 10px;
+
+    padding: 14px;
+
+    border-radius: 14px;
+
+    background: var(--green-soft);
+
+    color: var(--green);
+}
+
+.hours span {
+    font-size: 34px;
+
+    line-height: 1;
+
+    font-weight: 900;
+}
+
+.hours small {
+    font-size: 13px;
+
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   12. SUBJECTS
+   ========================================================= */
+
+.subjects-card {
+    min-height: 235px;
+}
+
+#subjectList {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+
+    margin-top: 8px;
+}
+
+.subject-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 9px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: #fbfbff;
+
+    font-size: 12px;
+
+    transition: all 0.2s ease;
+}
+
+.subject-item:hover {
+    background: var(--blue-soft);
+
+    border-color: #d7dcff;
+
+    transform: translateX(2px);
+}
+
+.subject-number {
+    width: 25px;
+    height: 25px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    color: var(--primary);
+
+    background: var(--blue-soft);
+
+    font-size: 11px;
+
+    font-weight: 850;
+}
+
+
+/* =========================================================
+   13. STUDY PROGRESS
+   ========================================================= */
+
+.progress-section {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 24px;
+
+    margin-bottom: 22px;
+
+    box-shadow: var(--shadow-small);
+}
+
+.progress-icon {
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: var(--purple-soft);
+
+    font-size: 23px;
+}
+
+.progress-content {
+    flex: 1;
+}
+
+.progress-content h2 {
+    font-size: 19px;
+
+    margin-bottom: 3px;
+}
+
+.progress-content p {
+    color: var(--text-light);
+
+    font-size: 13px;
+}
+
+.progress-bar {
+    width: 100%;
+
+    height: 10px;
+
+    margin: 14px 0 9px;
+
+    background: #eceef7;
+
+    border-radius: 999px;
+
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--primary),
+            var(--secondary),
+            var(--accent)
+        );
+
+    transition: width 0.7s ease;
+}
+
+.progress-info {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    font-size: 12px;
+}
+
+.progress-info strong {
+    color: var(--primary);
+}
+
+.progress-info span {
+    color: var(--text-light);
+}
+
+
+/* =========================================================
+   14. SMART PLAN
+   ========================================================= */
+
+.smart-plan-section {
+    background: rgba(255, 255, 255, 0.96);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-large);
+
+    padding: 28px;
+
+    margin-bottom: 22px;
+
+    box-shadow: var(--shadow-small);
+}
+
+.smart-plan-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.smart-plan-header h2 {
+    font-size: 21px;
+
+    margin-bottom: 5px;
+}
+
+.smart-plan-header p {
+    color: var(--text-light);
+
+    font-size: 13px;
+}
+
+.plan-score {
+    min-width: 100px;
+
+    padding: 14px;
+
+    border-radius: 16px;
+
+    background: var(--green-soft);
+
+    text-align: center;
+
+    flex-shrink: 0;
+}
+
+.plan-score span {
+    display: block;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    font-weight: 850;
+
+    color: var(--text-light);
+}
+
+.plan-score strong {
+    font-size: 30px;
+
+    line-height: 1;
+
+    color: var(--green);
+}
+
+.plan-score small {
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+   15. SMART PLAN LIST
+   ========================================================= */
+
+#smartPlanList,
+.smart-plan-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin-top: 20px;
+}
+
+.smart-plan-item {
+    display: grid;
+
+    grid-template-columns:
+        42px 1fr auto;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 16px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #fafaff
+        );
+
+    transition: all 0.25s ease;
+}
+
+.smart-plan-item:hover {
+    transform: translateX(4px);
+
+    border-color: #d5d9ff;
+
+    box-shadow: var(--shadow-small);
+}
+
+.plan-number {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+    font-weight: 850;
+
+    font-size: 13px;
+}
+
+.plan-details {
+    min-width: 0;
+}
+
+.plan-subject {
+    font-weight: 800;
+
+    font-size: 15px;
+}
+
+.plan-reason {
+    margin-top: 3px;
+
+    color: var(--text-light);
+
+    font-size: 12px;
+}
+
+.plan-time {
+    padding: 8px 11px;
+
+    border-radius: 10px;
+
+    background: var(--purple-soft);
+
+    color: var(--secondary);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.plan-priority {
+    display: inline-block;
+
+    margin-left: 7px;
+
+    padding: 4px 8px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+
+    font-weight: 750;
+
+    background: var(--blue-soft);
+
+    color: var(--primary);
+
+    vertical-align: middle;
+}
+
+.smart-plan-break {
+    padding: 12px 16px;
+
+    border: 1px dashed #d8dbea;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    color: var(--text-light);
+
+    background: #fafaff;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   16. PLAN VALIDATION
+   ========================================================= */
+
+.plan-validation {
+    margin-top: 15px;
+
+    padding: 12px 15px;
+
+    border-radius: 12px;
+
+    background: var(--green-soft);
+
+    border: 1px solid #d5f0e3;
+
+    color: var(--green);
+
+    font-size: 13px;
+
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   17. PLAN RESCUE
+   ========================================================= */
+
+.rescue-area {
+    margin-top: 18px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid var(--border);
+}
+
+.rescue-button {
+    padding: 12px 18px;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ef6b7a,
+            #e94f64
+        );
+
+    color: white;
+
+    font-weight: 800;
+
+    transition: all 0.2s ease;
+}
+
+.rescue-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(239, 107, 122, 0.22);
+}
+
+#rescueMessage {
+    margin: 15px 0;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+    background: var(--blue-soft);
+
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   18. RESCUE OVERLAY
+   ========================================================= */
+
+.rescue-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(30, 34, 65, 0.45);
+
+    backdrop-filter: blur(8px);
+}
+
+.rescue-modal {
+    width: 100%;
+
+    max-width: 580px;
+
+    max-height: 90vh;
+
+    overflow: auto;
+
+    background: white;
+
+    border-radius: 25px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 30px 90px rgba(20, 25, 60, 0.25);
+
+    animation:
+        rescueIn 0.3s ease;
+}
+
+@keyframes rescueIn {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(15px)
+            scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+.rescue-modal h2 {
+    font-size: 25px;
+
+    margin-bottom: 7px;
+}
+
+.rescue-description {
+    color: var(--text-light);
+
+    font-size: 13px;
+
+    margin-bottom: 22px;
+}
+
+.rescue-modal h3 {
+    font-size: 14px;
+
+    margin-bottom: 10px;
+}
+
+.rescue-session-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+.rescue-session-option {
+    width: 100%;
+
+    text-align: left;
+
+    border: 1px solid var(--border);
+
+    background: #fbfbff;
+
+    border-radius: 13px;
+
+    padding: 13px;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.rescue-session-option:hover,
+.rescue-session-option.selected {
+    border-color: var(--primary);
+
+    background: var(--blue-soft);
+}
+
+.rescue-session-option.selected {
+    box-shadow:
+        0 0 0 3px rgba(91, 108, 255, 0.08);
+}
+
+.rescue-time-label {
+    display: block;
+
+    margin-top: 20px;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 750;
+}
+
+.rescue-time-input {
+    width: 100%;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    padding: 12px;
+
+    outline: none;
+
+    font-size: 14px;
+}
+
+.rescue-time-input:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 4px rgba(91, 108, 255, 0.10);
+}
+
+.activate-rescue {
+    width: 100%;
+
+    border-radius: 14px;
+
+    padding: 14px;
+
+    margin-top: 17px;
+
+    color: white;
+
+    font-weight: 800;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+    transition: all 0.2s ease;
+}
+
+.activate-rescue:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   19. RECOMMENDATION
+   ========================================================= */
+
+.recommendation {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 24px;
+
+    margin-bottom: 22px;
+
+    border: 1px solid #dddfff;
+
+    border-radius: var(--radius);
+
+    background:
+        linear-gradient(
+            135deg,
+            #f4f5ff,
+            #fbf5ff
+        );
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.recommendation::after {
+    content: "✦";
+
+    position: absolute;
+
+    right: 22px;
+    top: 10px;
+
+    font-size: 40px;
+
+    color: rgba(124, 92, 255, 0.12);
+}
+
+.recommendation-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: white;
+
+    font-size: 23px;
+}
+
+.recommendation h2 {
+    color: var(--secondary);
+
+    font-size: 18px;
+
+    margin-bottom: 5px;
+}
+
+.recommendation p {
+    color: var(--text);
+
+    font-size: 13px;
+
+    max-width: 800px;
+}
+
+
+/* =========================================================
+   20. MOTIVATION
+   ========================================================= */
+
+.motivation-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 25px;
+
+    margin-bottom: 22px;
+
+    border-radius: var(--radius);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #fff7fb
+        );
+
+    border: 1px solid #f0dce7;
+
+    box-shadow: var(--shadow-small);
+}
+
+.motivation-icon {
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: var(--accent-soft);
+
+    font-size: 23px;
+}
+
+.motivation-label {
+    color: var(--accent) !important;
+
+    font-size: 10px !important;
+
+    font-weight: 850;
+
+    letter-spacing: 1.5px;
+}
+
+.motivation-content h2 {
+    font-size: 20px;
+
+    margin: 4px 0;
+}
+
+.motivation-content p:last-child {
+    color: var(--text-light);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   21. RADAR CARDS
+   ========================================================= */
+
+.radar-card {
+    padding: 22px;
+
+    margin-bottom: 22px;
+
+    border-radius: var(--radius);
+
+    border: 1px solid var(--border);
+
+    background: white;
+
+    box-shadow: var(--shadow-small);
+}
+
+.radar-card h3 {
+    font-size: 17px;
+
+    margin-bottom: 7px;
+}
+
+.radar-card p {
+    color: var(--text-light);
+
+    font-size: 13px;
+}
+
+.radar-item {
+    margin-top: 12px;
+
+    padding: 12px;
+
+    border-radius: 13px;
+
+    background: #fafaff;
+}
+
+
+/* =========================================================
+   22. CONSISTENCY WARNING
+   ========================================================= */
+
+.consistency-warning {
+    padding: 17px;
+
+    border: 1px solid #ffdca5;
+
+    border-radius: 15px;
+
+    background: var(--yellow-soft);
+
+    color: #775719;
+
+    font-size: 13px;
+
+    margin-bottom: 20px;
+}
+
+.warning-icon {
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   23. FOCUS PAGE
+   ========================================================= */
+
+.focus-page {
+    min-height: calc(100vh - 74px);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px 20px;
+}
+
+.focus-container {
+    width: 100%;
+
+    max-width: 620px;
+
+    text-align: center;
+}
+
+.focus-container h1 {
+    font-size: 42px;
+
+    margin-bottom: 8px;
+}
+
+.focus-container p {
+    color: var(--text-light);
+}
+
+
+/* =========================================================
+   24. FOCUS TIMER
+   ========================================================= */
+
+.timer {
+    margin: 35px auto;
+
+    width: min(380px, 80vw);
+
+    aspect-ratio: 1;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f1f2ff
+        );
+
+    border: 10px solid #e7e9ff;
+
+    box-shadow: var(--shadow-large);
+}
+
+.timer-display {
+    font-size:
+        clamp(52px, 10vw, 82px);
+
+    font-weight: 900;
+
+    letter-spacing: -3px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+.timer-label {
+    color: var(--text-muted);
+
+    font-size: 12px;
+
+    margin-top: 5px;
+}
+
+.focus-controls {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+.focus-controls button {
+    border: 1px solid var(--border);
+
+    border-radius: 13px;
+
+    padding: 12px 20px;
+
+    cursor: pointer;
+
+    font-weight: 750;
+
+    background: white;
+
+    color: var(--text);
+
+    transition: all 0.2s ease;
+}
+
+.focus-controls button:hover {
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-small);
+}
+
+.focus-controls button:first-child {
+    color: white;
+
+    border: none;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+}
+
+
+/* =========================================================
+   25. PLAN SCORE
+   ========================================================= */
+
+#planScore {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    background: var(--green-soft);
+
+    color: var(--green);
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   26. EMPTY STATES
+   ========================================================= */
+
+.empty-state {
+    text-align: center;
+
+    padding: 35px 20px;
+
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+   27. GENERAL SECTIONS
+   ========================================================= */
+
+.dashboard-section {
+    background: rgba(255, 255, 255, 0.94);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-large);
+
+    padding: 28px;
+
+    margin-bottom: 22px;
+
+    box-shadow: var(--shadow-small);
+}
+
+.dashboard-section h2 {
+    font-size: 21px;
+
+    margin-bottom: 6px;
+}
+
+
+/* =========================================================
+   28. SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f4f5fb;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cfd3e8;
+
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #aeb4d3;
+}
+
+
+/* =========================================================
+   29. SELECTION
+   ========================================================= */
+
+::selection {
+    background: #dfe2ff;
+
+    color: var(--text);
+}
+
+
+/* =========================================================
+   30. RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .dashboard-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   31. RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    nav,
+    .navbar {
+        padding: 0 18px;
+
+        min-height: 68px;
+    }
+
+    .logo {
+        font-size: 21px;
+    }
+
+    .nav-links {
+        gap: 2px;
+    }
+
+    .nav-links a {
+        padding: 7px 9px;
+
+        font-size: 12px;
+    }
+
+    .planner-page {
+        padding: 40px 15px;
+    }
+
+    .planner-form {
+        padding: 22px 18px;
+
+        border-radius: 22px;
+    }
+
+    .planner-header h1 {
+        font-size: 34px;
+    }
+
+    .dashboard {
+        padding: 28px 15px 50px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #subjectList {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-card {
+        min-height: auto;
+    }
+
+    .smart-plan-section {
+        padding: 20px;
+
+        border-radius: 21px;
+    }
+
+    .smart-plan-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .plan-score {
+        align-self: flex-start;
+    }
+
+    .smart-plan-item {
+        grid-template-columns:
+            36px 1fr;
+    }
+
+    .plan-time {
+        grid-column: 2;
+
+        justify-self: start;
+    }
+
+    .plan-number {
+        width: 32px;
+        height: 32px;
+    }
+
+    .progress-section,
+    .recommendation,
+    .motivation-card {
+        align-items: flex-start;
+    }
+
+    .progress-section {
+        flex-direction: column;
+    }
+
+    .rescue-modal {
+        padding: 22px;
+
+        border-radius: 21px;
+    }
+
+    .timer {
+        width: min(310px, 82vw);
+    }
+
+    .focus-container h1 {
+        font-size: 34px;
+    }
+
+}
+
+
+/* =========================================================
+   32. SUBTLE FLOATING EFFECT
+   ========================================================= */
+
+@keyframes gentleFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+
+}
+
+.eyebrow {
+    animation:
+        gentleFloat 4s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   33. ACCESSIBILITY
+   ========================================================= */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+
+    outline:
+        3px solid
+        rgba(91, 108, 255, 0.25);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   END OF FOCLYRA STYLE
+   ========================================================= */
+   /* =========================================================
+   FOCLYRA PLAN HEALTH
+   ========================================================= */
+
+.plan-health-section {
+    margin-top: 28px;
+    padding: 28px;
+    border: 1px solid #e2e5ff;
+    border-radius: 22px;
+    background: linear-gradient(
+        135deg,
+        #ffffff,
+        #f8f9ff
+    );
+    box-shadow: 0 10px 30px rgba(80, 90, 180, 0.08);
+}
+
+
+.plan-health-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+
+
+.plan-health-header h2 {
+    margin: 5px 0 6px;
+}
+
+
+.plan-health-header > div:first-child p:last-child {
+    margin: 0;
+    color: #666b80;
+}
+
+
+.plan-health-score {
+    min-width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    border: 8px solid #eef0ff;
+    background: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0 8px 22px rgba(80, 90, 180, 0.10);
+}
+
+
+.plan-health-score strong {
+    font-size: 34px;
+    line-height: 1;
+    color: #5b61ff;
+}
+
+
+.plan-health-score span {
+    margin-top: 5px;
+    font-size: 13px;
+    color: #777b90;
+}
+
+
+.plan-health-status {
+    margin-top: 22px;
+    padding: 14px 17px;
+    border-radius: 13px;
+    background: #f3f4ff;
+    color: #303451;
+    font-weight: 600;
+}
+
+
+.plan-health-details {
+    display: grid;
+    gap: 9px;
+    margin-top: 17px;
+}
+
+
+.health-positive,
+.health-warning {
+    padding: 11px 14px;
+    border-radius: 11px;
+    font-size: 14px;
+}
+
+
+.health-positive {
+    background: #f1fbf5;
+    color: #276344;
+}
+
+
+.health-warning {
+    background: #fff8ec;
+    color: #795a20;
+}
+
+
+.plan-health-suggestion {
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: #f5f3ff;
+    color: #4d43a5;
+    line-height: 1.5;
+}
+
+
+.plan-health-suggestion strong {
+    color: #5b4ed0;
+}
+
+
+/* Mobile */
+@media (max-width: 700px) {
+
+    .plan-health-section {
+        padding: 20px;
+    }
+
+    .plan-health-header {
+        align-items: flex-start;
+    }
+
+    .plan-health-score {
+        min-width: 85px;
+        width: 85px;
+        height: 85px;
+    }
+
+    .plan-health-score strong {
+        font-size: 27px;
+    }
+
+}
+.ai-dashboard-btn {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    text-decoration: none;
+    color: #1e1b4b;
+    font-weight: 600;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.ai-dashboard-btn:hover {
+    background: #f1f5ff;
+}
