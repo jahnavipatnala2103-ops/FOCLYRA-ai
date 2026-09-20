@@ -103,6 +103,7 @@
             text-decoration: underline;
         }
     </style>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body>
@@ -120,9 +121,21 @@
                 Let's build a smarter study routine.
             </p>
 
-            <button class="continue-btn" onclick="continueToPlanner()">
-                Continue to FOCLYRA →
-            </button>
+            <div id="g_id_onload"
+     data-client_id="723668198702-ott736ks8juvkakcmj03c9u5fae4q6et.apps.googleusercontent.com"
+     data-callback="handleGoogleLogin"
+     data-auto_prompt="false">
+</div>
+
+<div class="g_id_signin"
+     data-type="standard"
+     data-size="large"
+     data-theme="outline"
+     data-text="continue_with"
+     data-shape="rectangular"
+     data-logo_alignment="left"
+     data-width="350">
+</div>
 
             <p class="note">
                 Your study data stays on this device.
@@ -137,9 +150,24 @@
     </div>
 
     <script>
-        function continueToPlanner() {
-            window.location.href = "planner.html";
-        }
+        function handleGoogleLogin(response) {
+    try {
+        const payload = JSON.parse(
+            atob(response.credential.split(".")[1])
+        );
+
+        localStorage.setItem("googleLoggedIn", "true");
+        localStorage.setItem("googleUserName", payload.name || "");
+        localStorage.setItem("googleUserEmail", payload.email || "");
+        localStorage.setItem("googleUserPicture", payload.picture || "");
+
+        window.location.href = "planner.html";
+
+    } catch (error) {
+        console.error("Google login error:", error);
+        alert("Google login failed. Please try again.");
+    }
+}
     </script>
 
 </body>
