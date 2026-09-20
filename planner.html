@@ -866,6 +866,16 @@
 
     </script>
 <script src="theme.js"></script>
+<script>
+window.addEventListener("load", function () {
+    const googleName = localStorage.getItem("googleUserName");
+    const nameInput = document.getElementById("name");
+
+    if (googleName && nameInput) {
+        nameInput.value = googleName;
+    }
+});
+</script>
 </body>
 
 </html>
